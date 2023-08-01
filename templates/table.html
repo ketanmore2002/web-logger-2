@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Node Name : {{uuid}}</h2>
+<h2>Node date : {{date}}</h2>
+<h2>Node time : {{time}}</h2>
+
+
+<table>
+  <tr>
+    <th>current</th>
+    <th>power</th>
+    <th>voltage</th>
+    <th>generator speed</th>
+    <th>WindSpeed</th>
+    <th>Time</th>
+    <th>Date</th>
+  </tr>
+  {% for item in data %}
+  {% with c=item.0 v=item.1 p=item.2 g=item.3 w=item.4 %}
+  <tr>
+    <td>{{c}}</td>
+    <td>{{p}}</td>
+    <td>{{p}}</td>
+    <td>{{g}}</td>
+    <td>{{w}}</td>
+    {% comment %} <td>{{i.time}}</td>
+    <td>{{i.date}}</td> {% endcomment %}
+  </tr>
+  {% endwith %}
+  {% endfor %}
+</table>
+</body>
+</html>
+

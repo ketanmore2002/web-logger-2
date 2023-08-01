@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <title>Page</title>
+
+
+    <style>
+        @media print {
+      body * {
+        visibility: hidden;
+      }
+      
+      #canvas_div_pdf,
+      #canvas_div_pdf * {
+        visibility: visible;
+      }
+
+      #canvas_div_pdf {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        page-break-inside: avoid;
+      }
+
+      @page {
+        /* Adjust margins and page size for printing */
+        margin: 1cm;
+      }
+
+      #accordionSidebar{
+        display: navbar;
+      }
+
+    }
+    </style>
+
+
+
+  </head>
+  <body>
+    <div class="container-fluid">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light my-2" id="navbar">
+        <a class="navbar-brand mx-2" href="/admin_panel">uuid : {{uuid}} |</a>
+        <a class="navbar-brand mx-2" href="/admin_panel">Date : {{start_date}} to {{end_date}} |</a>
+        <a class="navbar-brand mx-2" href="/admin_panel">Time : {{start_time}} to {{end_time}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light my-2" id="navbar">
+      
+        <div class="navbar-brand" id="navbarSupportedContent">
+          <a> <button class="btn btn-outline-success my-2 my-sm-0" type="" id="" onclick="window.close()">Back</button></a>
+        </div>
+  
+        <div class="navbar-brand" id="navbarSupportedContent">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="" id="print_graph_1">Print</button>
+        </div>
+      </nav>
+
+    <table class="table my-2 border" id="canvas_div_pdf">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+
+          <th scope="col">Current(R)</th>
+          <th scope="col">Current(Y)</th>
+          <th scope="col">Current(B)</th>
+
+          <th scope="col">Voltage(R)</th>
+          <th scope="col">Voltage(Y)</th>
+          <th scope="col">Voltage(B)</th>
+
+          <th scope="col">Power</th>
+          <th scope="col">Generator Speed</th>
+          <th scope="col">Windspeed</th>
+          <th scope="col">Torque</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in data %}
+        <tr>
+          <td>{{ item.date }}</td>
+          <td>{{ item.time }}</td>
+
+          <td>{{ item.currentR }}</td>
+          <td>{{ item.currentY }}</td>
+          <td>{{ item.currentB }}</td>
+
+          <td>{{ item.voltageR }}</td>
+          <td>{{ item.voltageY }}</td>
+          <td>{{ item.voltageB }}</td>
+
+          <td>{{ item.power }}</td>
+          <td>{{ item.generator_speed }}</td>
+          <td>{{ item.windspeed }}</td>
+          <td>{{ item.torque }}</td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+      
+      
+    
+    </table>
+  </div>
+
+
+  <script>
+    function printDiv(divId) {
+      var divToPrint = document.getElementById(divId);
+
+      //var navbar = document.getElementById("accordionSidebar");
+      //navbar.style.visibility = 'hidden';
+
+      divToPrint.style.visibility = 'visible';
+      window.print();      
+      // Reset visibility after printing (optional)
+      divToPrint.style.visibility = 'visible';
+      //navbar.style.visibility = 'visible';
+    }
+    
+
+    var printButton = document.getElementById('print_graph_1');
+    printButton.addEventListener('click', function() {
+      printDiv("canvas_div_pdf")
+    });
+  </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

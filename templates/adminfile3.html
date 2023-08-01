@@ -1,0 +1,1938 @@
+<script>
+  $(document).ready(function () {
+    jQuery.noConflict();
+    //$('#password_modal').modal('show');
+    //=================================================
+
+
+    function checkPassword() {
+      var password = localStorage.getItem('password');
+      
+      if (!password) {
+        
+        $('#password_modal').modal('show');
+                
+        var form = document.getElementById('pass-btn');
+        form.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          var passwordInput = document.getElementById('password').value;
+          
+          localStorage.setItem('password', passwordInput);
+
+        
+          $('#password_modal').modal('hide');
+        });
+      }
+    };
+    
+    checkPassword();    
+
+
+    var log = document.getElementById('logout-btn');
+    log.addEventListener('click', function(e) {
+          e.preventDefault();
+          localStorage.clear();
+          window.location.replace("/logout");
+        });
+  //==================================================
+  var y;
+  function create_token() {
+
+    var payload = {
+      "username": "{{request.user.username}}",
+      "password": localStorage.getItem('password')
+    };
+
+    $.ajax({
+      url: "/api/token/",
+      async: false,
+      type: "POST",
+      data: JSON.stringify(payload),
+      cache: false,
+      processData: false,
+      contentType: "application/json",
+      success: function (data) {
+        // store tokens in localStorage
+        //x=window.localStorage.setItem('refreshToken', data['refresh']);
+        window.localStorage.setItem('accessToken', data['access']);
+        y = data['access']
+        //console.log(y);
+      },
+      error: function (rs, e) {
+        console.error(rs.status);
+        console.error(rs.responseText);
+      }
+    });
+  };
+
+  //create_token();
+  //console.log("out",y);
+
+
+  Date.prototype.today = function () {
+    return ((this.getDate() < 10) ? "0" : "") + this.getDate() + "/" + (((this.getMonth() + 1) < 10) ? "0" : "") + (this.getMonth() + 1) + "/" + this.getFullYear();
+  };
+
+  // For the time now
+  Date.prototype.timeNow = function () {
+    return ((this.getHours() < 10) ? "0" : "") + this.getHours() + ":" + ((this.getMinutes() < 10) ? "0" : "") + this.getMinutes() + ":" + ((this.getSeconds() < 10) ? "0" : "") + this.getSeconds();
+  };
+
+  //var datetime = new Date().today() + " @ " + new Date().timeNow();
+
+  //$('.time').text(datetime);
+
+
+  function checkAllValuesNone(payload) {
+    for (const key in payload) {
+      if (payload[key] !== "") {
+        return false; // Value is not "none"
+      }
+    }
+    return true; // All values are "none"
+  };
+
+
+  $("body").on("click", ".lala", function (e) {
+    e.preventDefault();
+    create_token();
+    var pk = this.id;
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+    $.ajax({
+      url: "delete_data_nodes/" + pk + "/",
+      data: {},
+      headers: headers_payload,
+      type: "POST",
+      contentType: "application/json",
+      success: function (result) {
+        document.getElementById("delete_node" + String(pk)).remove();
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+  });
+
+  $("#node2").hide();
+  $("#node1").click(function () {
+    jQuery.noConflict();
+    $('#exampleModal').modal('show');
+
+  });
+
+  $("#add_user").click(function () {
+    jQuery.noConflict();
+    $('#user_modal').modal('show');
+  });
+
+
+  //=============================================================   
+  $('#currentR-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".currentR-box").removeClass("d-none");
+      $("#currentR_low").val("0");
+      $("#currentR_high").val("100");
+    } else {
+      $(".currentR-box").addClass("d-none");
+      $("#currentR_low").val("undefined");
+      $("#currentR_high").val("undefined");
+    }
+  });
+
+  $('#currentY-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".currentY-box").removeClass("d-none");
+      $("#currentY_low").val("0");
+      $("#currentY_high").val("100");
+    } else {
+      $(".currentY-box").addClass("d-none");
+      $("#currentY_low").val("undefined");
+      $("#currentY_high").val("undefined");
+    }
+  });
+
+  $('#currentB-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".currentB-box").removeClass("d-none");
+      $("#currentB_low").val("0");
+      $("#currentB_high").val("100");
+    } else {
+      $(".currentB-box").addClass("d-none");
+      $("#currentB_low").val("undefined");
+      $("#currentB_high").val("undefined");
+    }
+  });
+
+  $('#voltageR-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageR-box").removeClass("d-none");
+      $("#voltageR_low").val("0");
+      $("#voltageR_high").val("100");
+    } else {
+      $(".voltageR-box").addClass("d-none");
+      $("#voltageR_low").val("undefined");
+      $("#voltageR_high").val("undefined");
+    }
+  });
+
+
+  $('#voltageY-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageY-box").removeClass("d-none");
+      $("#voltageY_low").val("0");
+      $("#voltageY_high").val("100");
+    } else {
+      $(".voltageY-box").addClass("d-none");
+      $("#voltageY_low").val("undefined");
+      $("#voltageY_high").val("undefined");
+    }
+  });
+
+  
+  $('#voltageB-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageB-box").removeClass("d-none");
+      $("#voltageB_low").val("0");
+      $("#voltageB_high").val("100");
+    } else {
+      $(".voltageB-box").addClass("d-none");
+      $("#voltageB_low").val("undefined");
+      $("#voltageB_high").val("undefined");
+    }
+  });
+
+  $('#generator_speed-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".generator_speed-box").removeClass("d-none");
+      $("#generator_speed_low").val("0");
+      $("#generator_speed_high").val("100");
+    } else {
+      $(".generator_speed-box").addClass("d-none");
+      $("#generator_speed_low").val("undefined");
+      $("#generator_speed_high").val("undefined");
+    }
+  });
+
+  $('#windspeed-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".windspeed-box").removeClass("d-none");
+      $("#windspeed_low").val("0");
+      $("#windspeed_high").val("100");
+    } else {
+      $(".windspeed-box").addClass("d-none");
+      $("#windspeed_low").val("undefined");
+      $("#windspeed_high").val("undefined");
+    }
+  });
+
+  $('#power-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".power-box").removeClass("d-none");
+      $("#power_low").val("0");
+      $("#power_high").val("100");
+    } else {
+      $(".power-box").addClass("d-none");
+      $("#power_low").val("undefined");
+      $("#power_high").val("undefined");
+    }
+  });
+
+  $('#torque-cb').change(function () {
+    if ($(this).is(':checked')) {
+      $(".torque-box").removeClass("d-none");
+      $("#torque_low").val("0");
+      $("#torque_high").val("100");
+    } else {
+      $(".torque-box").addClass("d-none");
+      $("#torque_low").val("undefined");
+      $("#torque_high").val("undefined");
+    }
+  });
+  //=============================================================   
+
+
+  $('#currentR-cb-edit').change(function () {
+    console.log("done");
+    if ($(this).is(':checked')) {
+      $(".currentR-box-edit").removeClass("d-none");
+      $("#edit-node-modal-currentR_low").attr('data-currentRlow', 'present');
+      $("#edit-node-modal-currentR_high").attr('data-currentRhigh', 'present');
+    } else {
+      $(".currentR-box-edit").addClass("d-none");
+      $("#edit-node-modal-currentR_low").attr('data-currentRlow', 'absent');
+      $("#edit-node-modal-currentR_high").attr('data-currentRhigh', 'absent');
+    }
+  });
+
+  $('#currentY-cb-edit').change(function () {
+    console.log("done");
+    if ($(this).is(':checked')) {
+      $(".currentY-box-edit").removeClass("d-none");
+      $("#edit-node-modal-currentY_low").attr('data-currentYlow', 'present');
+      $("#edit-node-modal-currentY_high").attr('data-currentYhigh', 'present');
+    } else {
+      $(".currentY-box-edit").addClass("d-none");
+      $("#edit-node-modal-currentY_low").attr('data-currentYlow', 'absent');
+      $("#edit-node-modal-currentY_high").attr('data-currenYthigh', 'absent');
+    }
+  });
+
+  $('#currentB-cb-edit').change(function () {
+    console.log("done");
+    if ($(this).is(':checked')) {
+      $(".currentB-box-edit").removeClass("d-none");
+      $("#edit-node-modal-currentB_low").attr('data-currentBlow', 'present');
+      $("#edit-node-modal-currentB_high").attr('data-currentBhigh', 'present');
+    } else {
+      $(".currentB-box-edit").addClass("d-none");
+      $("#edit-node-modal-currentB_low").attr('data-currentBlow', 'absent');
+      $("#edit-node-modal-currentB_high").attr('data-currentBhigh', 'absent');
+    }
+  });
+
+  $('#voltageR-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageR-box-edit").removeClass("d-none");
+      $("#edit-node-modal-voltageR_low").attr('data-voltageRlow', 'present');
+      $("#edit-node-modal-voltageR_high").attr('data-voltageRhigh', 'present');
+    } else {
+      $(".voltageR-box-edit").addClass("d-none");
+      $("#edit-node-modal-voltageR_low").attr('data-voltageRlow', 'absent');
+      $("#edit-node-modal-voltageR_high").attr('data-voltageRhigh', 'absent');
+    }
+  });
+
+  $('#voltageY-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageY-box-edit").removeClass("d-none");
+      $("#edit-node-modal-voltageY_low").attr('data-voltageYlow', 'present');
+      $("#edit-node-modal-voltageY_high").attr('data-voltageYhigh', 'present');
+    } else {
+      $(".voltageY-box-edit").addClass("d-none");
+      $("#edit-node-modal-voltageY_low").attr('data-voltageYlow', 'absent');
+      $("#edit-node-modal-voltageY_high").attr('data-voltageYhigh', 'absent');
+    }
+  });
+
+  $('#voltageB-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".voltageB-box-edit").removeClass("d-none");
+      $("#edit-node-modal-voltageB_low").attr('data-voltageBlow', 'present');
+      $("#edit-node-modal-voltageB_high").attr('data-voltageBhigh', 'present');
+    } else {
+      $(".voltageB-box-edit").addClass("d-none");
+      $("#edit-node-modal-voltageB_low").attr('data-voltageBlow', 'absent');
+      $("#edit-node-modal-voltageB_high").attr('data-voltageBhigh', 'absent');
+    }
+  });
+
+  $('#generator_speed-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".generator_speed-box-edit").removeClass("d-none");
+      $("#edit-node-modal-generator_speed_low").attr('data-generatorspeedlow', 'present');
+      $("#edit-node-modal-generator_speed_high").attr('data-generatorspeedhigh', 'present');
+    } else {
+      $(".generator_speed-box-edit").addClass("d-none");
+      $("#edit-node-modal-generator_speed_low").attr('data-generatorspeedlow', 'absent');
+      $("#edit-node-modal-generator_speed_high").attr('data-generatorspeedhigh', 'absent');
+    }
+  });
+
+  $('#windspeed-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".windspeed-box-edit").removeClass("d-none");
+      $("#edit-node-modal-windspeed_low").attr('data-windspeedlow', 'present');
+      $("#edit-node-modal-windspeed_high").attr('data-windspeedhigh', 'present');
+    } else {
+      $(".windspeed-box-edit").addClass("d-none");
+      $("#edit-node-modal-windspeed_low").attr('data-windspeedlow', 'absent');
+      $("#edit-node-modal-windspeed_high").attr('data-windspeedhigh', 'absent');
+    }
+  });
+
+  $('#power-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".power-box-edit").removeClass("d-none");
+      $("#edit-node-modal-power_low").attr('data-powerlow', 'present');
+      $("#edit-node-modal-power_high").attr('data-powerhigh', 'present');
+    } else {
+      $(".power-box-edit").addClass("d-none");
+      $("#edit-node-modal-power_low").attr('data-powerlow', 'absent');
+      $("#edit-node-modal-power_high").attr('data-powerhigh', 'absent');
+    }
+  });
+
+  $('#torque-cb-edit').change(function () {
+    if ($(this).is(':checked')) {
+      $(".torque-box-edit").removeClass("d-none");
+      $("#edit-node-modal-torque_low").attr('data-torquelow', 'present');
+      $("#edit-node-modal-torque_high").attr('data-torquehigh', 'present');
+    } else {
+      $(".torque-box-edit").addClass("d-none");
+      $("#edit-node-modal-torque_low").attr('data-torquelow', 'absent');
+      $("#edit-node-modal-torque_high").attr('data-torquehigh', 'absent');
+    }
+  });
+
+
+
+  $("#add_node").click(function () {
+
+    create_token();
+    var payload_add = {
+      machine: $("#machine").val(),
+      location: $("#location").val(),
+      sub_location: $("#sub_location").val(),
+      uuid: $("#UID").val(),
+      user_name: "{{ user.username }}",
+      user_id: "{{ user.id }}",
+      csrfmiddlewaretoken: "{{ csrf_token }}",
+      email: $("#email").val(),
+
+      currentR_low: $("#currentR_low").val(),
+      currentR_high: $("#currentR_high").val(),
+
+      currentY_low: $("#currentY_low").val(),
+      currentY_high: $("#currentY_high").val(),
+
+      currentB_low: $("#currentB_low").val(),
+      currentB_high: $("#currentB_high").val(),
+
+      power_low: $("#power_low").val(),
+      power_high: $("#power_high").val(),
+
+      voltageR_high: $("#voltageR_high").val(),
+      voltageR_low: $("#voltageR_low").val(),
+
+      voltageY_high: $("#voltageY_high").val(),
+      voltageY_low: $("#voltageY_low").val(),
+
+      voltageB_high: $("#voltageB_high").val(),
+      voltageB_low: $("#voltageB_low").val(),
+
+      generator_speed_high: $("#generator_speed_high").val(),
+      generator_speed_low: $("#generator_speed_low").val(),
+
+      power_high: $("#power_high").val(),
+      power_low: $("#power_low").val(),
+
+      windspeed_high: $("#windspeed_high").val(),
+      windspeed_low: $("#windspeed_low").val(),
+
+      torque_high: $("#torque_high").val(),
+      torque_low: $("#torque_low").val(),
+    };
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    //console.log(payload_add)
+
+    //$('#my-checkbox-group').change(function () {
+    if ($('.custom-control-input:checked').length > 0 && $("#machine").val() != "" && $("#location").val() != "" && $("#sub_location").val() != "" && $("#UID").val() != "" && $("#email").val() != "") {
+      console.log('At least one checkbox is checked.');
+      $.ajax({
+        url: "/post_data_nodes",
+        headers: headers_payload,
+        type: "POST",
+        data: JSON.stringify(payload_add),
+        success: function (data, textStatus, jqXHR) {
+          location.reload(true);
+          // window.location.href = window.location.href;
+          // location = location;
+          // window.location.replace("http://127.0.0.1:8000/admin_panel");
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert(errorThrown);
+        },
+      });
+
+    } else {
+      // No checkboxes are checked
+      alert('Please Fill Complete Information.');
+    }
+    //});
+
+
+  });
+
+
+  $("body").on("click", ".edit", function () {
+    pk = (this.id);
+    $.ajax({
+      url: "/get_single_node/" + pk,
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (data, textStatus, jqXHR) {
+
+        var data = JSON.parse(data);
+        console.log(data);
+        console.log(data.voltage_high);
+
+        $('#edit-node-modal-UID').val(data.uuid);
+        $('#edit-node-modal-location').val(data.location);
+        $('#edit-node-modal-sub_location').val(data.sub_location);
+        $('#edit-node-modal-machine').val(data.machine);
+        $('#edit-node-modal-email').val(data.email);
+
+        $('#edit-node-modal-currentR_low').val(data.currentR_low);
+        $('#edit-node-modal-currentR_high').val(data.currentR_high);
+
+        $('#edit-node-modal-currentY_low').val(data.currentY_low);
+        $('#edit-node-modal-currentY_high').val(data.currentY_high);
+
+        $('#edit-node-modal-currentB_low').val(data.currentB_low);
+        $('#edit-node-modal-currentB_high').val(data.currentB_high);
+
+        $('#edit-node-modal-voltageR_low').val(data.voltageR_low);
+        $('#edit-node-modal-voltageR_high').val(data.voltageR_high);
+
+        $('#edit-node-modal-voltageY_low').val(data.voltageY_low);
+        $('#edit-node-modal-voltageY_high').val(data.voltageY_high);
+
+        $('#edit-node-modal-voltageB_low').val(data.voltageB_low);
+        $('#edit-node-modal-voltageB_high').val(data.voltageB_high);
+
+        $('#edit-node-modal-generator_speed_low').val(data.generator_speed_low);
+        $('#edit-node-modal-generator_speed_high').val(data.generator_speed_high);
+        $('#edit-node-modal-windspeed_low').val(data.windspeed_low);
+        $('#edit-node-modal-windspeed_high').val(data.windspeed_high);
+        $('#edit-node-modal-power_low').val(data.power_low);
+        $('#edit-node-modal-power_high').val(data.power_high);
+
+        $('#edit-node-modal-torque_low').val(data.torque_low);
+        $('#edit-node-modal-torque_high').val(data.torque_high);
+
+        $('.save-btn').attr("id", data.id);
+
+        //$("#voltage-cb-edit").prop('checked', true);
+        jQuery.noConflict();
+        $('#edit-node-modal').modal('show')
+
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown)
+      }
+    })
+  });
+
+
+
+
+  $("body").on("click", ".save-btn", function () {
+    create_token();
+    pk = this.id
+
+    var payload = {
+
+      uuid: $('#edit-node-modal-UID').val(),
+      location: $('#edit-node-modal-location').val(),
+      sub_location: $('#edit-node-modal-sub_location').val(),
+      machine: $('#edit-node-modal-machine').val(),
+      email: $('#edit-node-modal-email').val(),
+
+      currentR_low: $('#edit-node-modal-currentR_low').val(),
+      currentR_high: $('#edit-node-modal-currentR_high').val(),
+
+      currentY_low: $('#edit-node-modal-currentY_low').val(),
+      currentY_high: $('#edit-node-modal-currentY_high').val(),
+
+      currentB_low: $('#edit-node-modal-currentB_low').val(),
+      currentB_high: $('#edit-node-modal-currentB_high').val(),
+
+      voltageR_low: $('#edit-node-modal-voltageR_low').val(),
+      voltageR_high: $('#edit-node-modal-voltageR_high').val(),
+
+      voltageY_low: $('#edit-node-modal-voltageY_low').val(),
+      voltageY_high: $('#edit-node-modal-voltageY_high').val(),
+
+      voltageB_low: $('#edit-node-modal-voltageB_low').val(),
+      voltageB_high: $('#edit-node-modal-voltageB_high').val(),
+
+      generator_speed_low: $('#edit-node-modal-generator_speed_low').val(),
+      generator_speed_high: $('#edit-node-modal-generator_speed_high').val(),
+      windspeed_low: $('#edit-node-modal-windspeed_low').val(),
+      windspeed_high: $('#edit-node-modal-windspeed_high').val(),
+      power_low: $('#edit-node-modal-power_low').val(),
+      power_high: $('#edit-node-modal-power_high').val(),
+
+      torque_low: $('#edit-node-modal-torque_low').val(),
+      torque_high: $('#edit-node-modal-torque_high').val(),
+
+      currentR_low_value: $("#edit-node-modal-currentR_low").attr('data-currentRlow'),
+      currentR_high_value: $("#edit-node-modal-currentR_high").attr('data-currentRhigh'),
+
+      currentY_low_value: $("#edit-node-modal-currentY_low").attr('data-currentYlow'),
+      currentY_high_value: $("#edit-node-modal-currentY_high").attr('data-currentYhigh'),
+
+      currentB_low_value: $("#edit-node-modal-currentB_low").attr('data-currentBlow'),
+      currentB_high_value: $("#edit-node-modal-currentB_high").attr('data-currentBhigh'),
+
+      voltageR_low_value: $("#edit-node-modal-voltageR_low").attr('data-voltageRlow'),
+      voltageR_high_value: $("#edit-node-modal-voltageR_high").attr('data-voltageRhigh'),
+
+      voltageY_low_value: $("#edit-node-modal-voltageY_low").attr('data-voltageYlow'),
+      voltageY_high_value: $("#edit-node-modal-voltageY_high").attr('data-voltageYhigh'),
+
+      voltageB_low_value: $("#edit-node-modal-voltageB_low").attr('data-voltageBlow'),
+      voltageB_high_value: $("#edit-node-modal-voltageB_high").attr('data-voltageBhigh'),
+
+      generator_speed_low_value: $("#edit-node-modal-generator_speed_low").attr('data-generatorspeedlow'),
+      generator_speed_high_value: $("#edit-node-modal-generator_speed_high").attr('data-generatorspeedhigh'),
+      windspeed_low_value: $("#edit-node-modal-windspeed_low").attr('data-windspeedlow'),
+      windspeed_high_value: $("#edit-node-modal-windspeed_high").attr('data-windspeedhigh'),
+      power_low_value: $("#edit-node-modal-power_low").attr('data-powerlow'),
+      power_high_value: $("#edit-node-modal-power_high").attr('data-powerhigh'),
+
+      torque_low_value: $("#edit-node-modal-torque_low").attr('data-torquelow'),
+      torque_high_value: $("#edit-node-modal-torque_high").attr('data-torquehigh')
+
+    };
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    $.ajax({
+      url: "/update_single_node/" + pk + "/",
+      type: "PUT",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        jQuery.noConflict();
+        $('#edit-node-modal').modal('hide');
+        $('#changes').modal('show');
+        location.reload(true);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+
+  $("body").on("click", ".noti-center", function (e) {
+    e.preventDefault()
+    var ids = this.id
+    uuid = $(this).attr('data-node-name');
+    $('.save-user-node').attr('id', ids);
+    $('#exampleModalLabel-deleted-node').text('Select new user for node ' + uuid + ids);
+    $('#user-list-noti-modal').modal('show');
+  });
+
+
+  $("body").on("click", ".save-user-node", function (e) {
+    e.preventDefault()
+    create_token();
+
+    var ids = this.id;
+
+    payload_add = {
+      "node_id": String(ids),
+      "user_name": $('#user-list-dropdown :selected').text()
+    }
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    $.ajax({
+      url: "/manage_deleted_nodes/",
+      data: JSON.stringify(payload_add),
+      headers: headers_payload,
+      type: "POST",
+      contentType: "application/json",
+      success: function (data, textStatus, jqXHR) {
+        //alert("success"),
+        $('#notifications-counter').text(parseInt($('#notifications-counter').text()) - 1);
+
+        $('#notification-' + String(ids)).remove();
+        var lis = '<a class="dropdown-item bg-transparent" id=""> <div class="noti rounded border-dark border"> <div class="toast-header"> <strong class="mr-auto h4"> No Notifications </strong> </div> </div> </a>'
+        if ($('#notifications-counter').text() == String(0))
+        //alert(ids)
+        { $('#notification-list').append(lis); }
+
+
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    })
+  })
+
+  $("body").on("click", ".noti-delete", function (e) {
+    e.preventDefault();
+    create_token();
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    var ids = this.id;
+
+    payload = {
+      "node_id": String(ids)
+    };
+
+    $.ajax({
+      url: "/manage_deleted_nodes",
+      type: "DELETE",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        //alert("success")
+
+        $('#notifications-counter').text(parseInt($('#notifications-counter').text()) - 1);
+
+        $('#notification-' + String(ids)).remove();
+        var lis = '<a class="dropdown-item bg-transparent" id=""> <div class="noti rounded border-dark border"> <div class="toast-header"> <strong class="mr-auto h4"> No Notifications </strong> </div> </div> </a>'
+        if ($('#notifications-counter').text() == String(0))
+        //alert(ids)
+        { $('#notification-list').append(lis); }
+
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  })
+
+  function run_data_voltageR() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/volatgeR_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]);
+          $("#voltageR-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["voltageR"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_voltageR, 5000);
+
+  function run_data_voltageY() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/volatgeY_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["voltagY"]);
+          $("#voltageY-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["voltageY"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_voltageY, 5000);
+
+  function run_data_voltageB() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/volatgeB_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]);
+          $("#voltageB-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["voltageB"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_voltageB, 5000);
+
+
+  function run_data_currentR() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/currentR_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#currentR-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["currentR"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_currentR, 5000);
+
+  function run_data_currentY() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/currentY_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#currentY-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["currentY"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_currentY, 5000);
+
+  function run_data_currentB() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/currentB_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#currentB-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["currentB"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_currentB, 5000);
+
+
+  function run_data_power() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/power_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#power-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["power"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_power, 5000);
+
+
+  function run_data_generator_speed() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/generator_speed_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#generator_speed-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["generator_speed"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_generator_speed, 5000);
+
+
+  function run_data_windspeed() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/windspeed_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#windspeed-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["windspeed"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_windspeed, 5000);
+
+  function run_data_torque() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/torque_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]);
+          $("#torque-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["torque"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_torque, 5000);
+
+
+
+  function run_data_battery() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/battery_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#battery-" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["battery"])
+        };
+      }
+    });
+  };
+  setInterval(run_data_battery, 5000);
+
+
+  function run_health_data() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/node_health_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]["uuid"]);
+          $("#faulty" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["health"])
+        };
+      }
+    });
+  };
+  setInterval(run_health_data, 5000);
+
+
+  function run_time_data() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/time_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        //console.log(result)  
+        for (let i = 0; i < result.length; i++) {
+          //console.log(result[i]["fields"]);
+          $("#time" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["date"] + " @ " + result[i]["fields"]["time"])
+        };
+      }
+    });
+  };
+  setInterval(run_time_data, 5000);
+
+
+  function run_notification_data() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/notification_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        $("#notification-list").empty();
+        $("#notifications-counter").text(result.length);
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            $("#notification-list").append(`
+              <a class="dropdown-item bg-transparent" id="notification-notification${result[i]["fields"]["node_id"]}">
+                <div class="noti rounded border-dark border">
+                  <div class="toast-header">
+                    <strong class="mr-auto h4"> ${result[i]["fields"]["uuid"]} node as been deleted</strong>
+                  </div>
+                  <div class="toast-body">
+                    Please Take a action :
+                  </div>
+                    <div class="row toast-body">
+                      <button type="button" class="btn btn-primary col-4 mx-2 noti-center" id="${result[i]["fields"]["node_id"]}"
+                        data-node-name="${result[i]["fields"]["uuid"]}">Change User</button>
+                      <button type="button" class="btn btn-danger col-4 mx-1 noti-delete" id="${result[i]["fields"]["node_id"]}"
+                        data-node-name="${result[i]["fields"]["uuid"]}">Delete Node</button>
+                    </div>
+                </div>
+              </a>
+              `);
+              $("#delete_node" + result[i]["fields"]["node_id"]).hide();
+              //console.log("#delete_node" + result[i]["fields"]["node_id"])
+          };
+        }
+        else {
+          $("#notification-list").append(`
+            <a class="dropdown-item bg-transparent" id="">
+              <div class="noti rounded border-dark border">
+                <div class="toast-header">
+                  <strong class="mr-auto h4"> No Notifications </strong>
+                </div>
+              </div>
+            </a>`)
+        }
+      }
+    });
+  };
+  setInterval(run_notification_data, 2000);
+
+
+  function check_deleted_nodes() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/check_deleted_nodes/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+        for (let i = 0; i < result.length; i++) {
+          //console.log("#delete_node" + result[i]["pk"])  
+          //$("#delete_node" + result[i]["pk"]).addClass("d-none");
+        document.getElementById("delete_node" + String(result[i]["pk"])).remove();
+        };
+      }
+    });
+  };
+  setInterval(check_deleted_nodes, 2000);
+
+  function task_data() {
+    //create_token();
+    //headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+    $.ajax({
+      url: "/task_data/",
+      data: {},
+      //headers: headers_payload,
+      type: "GET",
+      contentType: "application/json",
+      success: function (result) {
+       if(result == "incomplete"){
+        location.reload(true);
+       }
+      }
+    });
+  };
+  setInterval(task_data, 2000);
+
+  //---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+  Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+  Chart.defaults.global.defaultFontColor = '#858796';
+
+  function number_format(number, decimals, dec_point, thousands_sep) {
+    // *     example: number_format(1234.56, 2, ',', ' ');
+    // *     return: '1 234,56'
+    number = (number + '').replace(',', '').replace(' ', '');
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+      s = '',
+      toFixedFix = function (n, prec) {
+        var k = Math.pow(10, prec);
+        return '' + Math.round(n * k) / k;
+      };
+    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
+  }
+
+  // Area Chart Example
+  function graph(label, currentR, currentY, currentB, voltageR, voltageY, voltageB , generator_speed, windspeed, power, torque) {
+    var ctx = document.getElementById("myAreaChart");
+    var myLineChart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: label,
+        datasets: [{
+          label: "currentR",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#FF5733",
+          pointRadius: 3,
+          pointBackgroundColor: "#FF5733",
+          pointBorderColor: "#FF5733",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#FF5733",
+          pointHoverBorderColor: "#FF5733",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: currentR,
+        },        
+        {label: "currentY",
+        lineTension: 0.3,
+        backgroundColor: "#FFFFFF",
+        borderColor: "#FFC300",
+        pointRadius: 3,
+        pointBackgroundColor: "#FFC300",
+        pointBorderColor: "#FFC300",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "#FFC300",
+        pointHoverBorderColor: "#FFC300",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        data: currentY,
+      },
+       {label: "currentB",
+        lineTension: 0.3,
+        backgroundColor: "#FFFFFF",
+        borderColor: "#3C8DBC",
+        pointRadius: 3,
+        pointBackgroundColor: "#3C8DBC",
+        pointBorderColor: "#3C8DBC",
+        pointHoverRadius: 3,
+        pointHoverBackgroundColor: "#3C8DBC",
+        pointHoverBorderColor: "#3C8DBC",
+        pointHitRadius: 10,
+        pointBorderWidth: 2,
+        data: currentB,
+      },
+        {
+          label: "power",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#02f2ee",
+          pointRadius: 3,
+          pointBackgroundColor: "#02f2ee",
+          pointBorderColor: "#02f2ee",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#02f2ee",
+          pointHoverBorderColor: "#02f2ee",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: power,
+        },
+        {
+          label: "voltageR",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#D81B60",
+          pointRadius: 3,
+          pointBackgroundColor: "#D81B60",
+          pointBorderColor: "#D81B60",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#D81B60",
+          pointHoverBorderColor: "#D81B60",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: voltageR,
+        },
+        {
+          label: "voltageY",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#673AB7",
+          pointRadius: 3,
+          pointBackgroundColor: "#673AB7",
+          pointBorderColor: "#673AB7",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#673AB7",
+          pointHoverBorderColor: "#673AB7",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: voltageY,
+        },
+        {
+          label: "voltageB",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#FF851B",
+          pointRadius: 3,
+          pointBackgroundColor: "#FF851B",
+          pointBorderColor: "#FF851B",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#FF851B",
+          pointHoverBorderColor: "#FF851B",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: voltageB,
+        },
+        {
+          label: "generator speed",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#009688",
+          pointRadius: 3,
+          pointBackgroundColor: "009688",
+          pointBorderColor: "009688",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "009688",
+          pointHoverBorderColor: "009688",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: generator_speed,
+        },
+        {
+          label: "windspeed",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#3b033d",
+          pointRadius: 3,
+          pointBackgroundColor: "#3b033d",
+          pointBorderColor: "#3b033d",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#3b033d",
+          pointHoverBorderColor: "#3b033d",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: windspeed,
+        },
+        {
+          label: "torque",
+          lineTension: 0.3,
+          backgroundColor: "#FFFFFF",
+          borderColor: "#c634eb",
+          pointRadius: 3,
+          pointBackgroundColor: "#c634eb",
+          pointBorderColor: "#c634eb",
+          pointHoverRadius: 3,
+          pointHoverBackgroundColor: "#c634eb",
+          pointHoverBorderColor: "#c634eb",
+          pointHitRadius: 10,
+          pointBorderWidth: 2,
+          data: torque,
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        layout: {
+          padding: {
+            left: 10,
+            right: 25,
+            top: 25,
+            bottom: 0
+          }
+        },
+        scales: {
+          xAxes: [{
+            time: {
+              unit: 'date'
+            },
+            gridLines: {
+              display: false,
+              drawBorder: false
+            },
+            ticks: {
+              maxTicksLimit: 7
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              maxTicksLimit: 5,
+              padding: 10,
+              callback: function (value, index, values) {
+                return number_format(value);
+              }
+            },
+            gridLines: {
+              color: "rgb(234, 236, 244)",
+              zeroLineColor: "rgb(234, 236, 244)",
+              drawBorder: true,
+              borderDash: [2],
+              zeroLineBorderDash: [2]
+            }
+          }],
+        },
+        legend: {
+          display: true,
+          position: 'left'
+        },
+        tooltips: {
+          backgroundColor: "rgb(255,255,255)",
+          bodyFontColor: "#858796",
+          titleMarginBottom: 10,
+          titleFontColor: '#6e707e',
+          titleFontSize: 14,
+          borderColor: '#dddfeb',
+          borderWidth: 1,
+          xPadding: 15,
+          yPadding: 15,
+          displayColors: false,
+          intersect: true,
+          mode: 'index',
+          caretPadding: 10,
+          callbacks: {
+            label: function (tooltipItem, chart) {
+              var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+              return datasetLabel + ':' + number_format(tooltipItem.yLabel);
+            }
+          }
+        }
+      }
+    });
+  };
+
+  $("#senddata").click(function (e) {
+    e.preventDefault();
+    create_token();
+    var payload_add = {
+      uuid: $("#uuid_graph").val(),
+      field: $("#field").val(),
+      start_date: $("#start_date").val(),
+      end_date: $("#end_date").val(),
+      start_time: $("#start_time").val(),
+      end_time: $("#end_time").val(),
+    };
+    if (Math.floor((Date.parse($("#end_date").val()) - Date.parse($("#start_date").val())) / 86400000) < 90) {
+      headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+      $.ajax({
+        url: "/graph" + "/",
+        headers: headers_payload,
+        type: "POST",
+        data: JSON.stringify(payload_add),
+        success: function (data, textStatus, jqXHR) {
+
+          //console.log(data);
+
+          var label = data["labels"];
+
+          var currentR = (data["currentR"] || [0]);
+          var currentY = (data["currentY"] || [0]);
+          var currentB = (data["currentB"] || [0]);
+
+          var power = (data["power"] || [0]);
+
+          var voltageR = (data["voltageR"] || [0]);
+          var voltageY = (data["voltageY"] || [0]);
+          var voltageB = (data["voltageB"] || [0]);
+
+          var generator_speed = (data["generator_speed"] || [0]);
+          var windspeed = (data["windspeed"] || [0]);
+          var torque = (data["torque"] || [0]);
+
+          $('#table-report').empty();
+          $("#myAreaChart").remove()
+          $("#graph_div").append(`<canvas class="" id="myAreaChart"></canvas>`)
+
+          graph(label, currentR, currentY, currentB, voltageR, voltageY, voltageB , generator_speed, windspeed, power, torque);
+
+            uuid = $("#uuid_graph").val(),
+            start_time = $("#start_time").val(),
+            end_time = $("#end_time").val(),
+            start_date = $("#start_date").val(),
+            end_date = $("#end_date").val(),
+            $("#node_name").text(uuid)
+          $("#node_date").text(start_date + "-" + end_date)
+          $("#node_time").text(start_time + "-" + end_time)
+          $("#print_table").attr("href", "/generateinvoice/" + uuid + "/" + start_time + "/" + end_time + "/" + start_date + "/" + end_date + "/")
+
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert(errorThrown);
+        },
+
+      })
+    }
+    else {
+      alert("Select Dates Till 3 months")
+    }
+    ;
+  });
+
+
+
+  $("#senddata").click(function (e) {
+
+    create_token();
+    var payload_add = {
+      uuid: $("#uuid_graph").val(),
+      field: $("#field").val(),
+      start_date: $("#start_date").val(),
+      end_date: $("#end_date").val(),
+      start_time: $("#start_time").val(),
+      end_time: $("#end_time").val(),
+    };
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    $.ajax({
+      url: "/statis/",
+      headers: headers_payload,
+      data: JSON.stringify(payload_add),
+      type: "POST",
+      success: function (data, textStatus, jqXHR) {
+        //console.log(data.current_std),
+        data = JSON.parse(data),
+          $("#sd_currentR").text(data["currentR_std"]),
+          $("#sd_currentY").text(data["currentY_std"]),
+          $("#sd_currentB").text(data["currentB_std"]),
+
+          $("#sd_power").text(data["power_std"]),
+
+          $("#sd_voltageR").text(data["voltageR_std"]),
+          $("#sd_voltageY").text(data["voltageY_std"]),
+          $("#sd_voltageB").text(data["voltageB_std"]),
+
+          $("#sd_generator_speed").text(data["generator_speed_std"]),
+          $("#sd_windspeed").text(data["windspeed_std"]),
+          $("#sd_torque").text(data["torque_std"]),
+
+          $("#variR_current").text(data["currentR_var"]),
+          $("#variY_current").text(data["currentY_var"]),
+          $("#variB_current").text(data["currentB_var"]),
+
+          $("#vari_power").text(data["power_var"]),
+
+          $("#variR_voltage").text(data["voltageR_var"]),
+          $("#variY_voltage").text(data["voltageY_var"]),
+          $("#variB_voltage").text(data["voltageB_var"]),
+
+          $("#vari_generator_speed").text(data["generator_speed_var"]),
+          $("#vari_windspeed").text(data["windspeed_var"]),
+          $("#vari_torque").text(data["torque_var"]),
+
+     //===========================================================
+
+          $("#mean_currentR").text(data["currentR_mean"]),
+          $("#mean_currentY").text(data["currentY_mean"]),
+          $("#mean_currentB").text(data["currentB_mean"]),
+
+          $("#mean_power").text(data["power_mean"]),
+
+          $("#mean_voltageR").text(data["voltageR_mean"]),
+          $("#mean_voltageY").text(data["voltageY_mean"]),
+          $("#mean_voltageB").text(data["voltageB_mean"]),
+
+          $("#mean_generator_speed").text(data["generator_speed_mean"]),
+          $("#mean_windspeed").text(data["windspeed_mean"])
+          $("#mean_torque").text(data["torque_mean"])
+
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+        jQuery.noConflict();
+        $('#stats_error').modal('show');
+      }
+    });
+  })
+
+
+
+  $("#senddata").click(function (e) {
+    create_token();
+    var payload_add = {
+      uuid: $("#uuid_graph").val(),
+      field: $("#field").val(),
+      start_date: $("#start_date").val(),
+      end_date: $("#end_date").val(),
+      start_time: $("#start_time").val(),
+      end_time: $("#end_time").val(),
+    };
+    uuid = $("#uuid_graph").val(),
+      headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+    $.ajax({
+      url: "/insight_current_week/" + uuid,
+      headers: headers_payload,
+      data: JSON.stringify(payload_add),
+      type: "POST",
+      success: function (data, textStatus, jqXHR) {
+        console.log(data)
+        $("#insights_week").text(data)
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      }
+    });
+
+    $.ajax({
+      url: "/insight_current_month/" + uuid,
+      headers: headers_payload,
+      type: "POST",
+      success: function (data, textStatus, jqXHR) {
+        console.log(data)
+        $("#insights_month").text(data)
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      }
+    });
+
+    $.ajax({
+      url: "/insight_current_range",
+      headers: headers_payload,
+      data: JSON.stringify(payload_add),
+      type: "POST",
+      success: function (data, textStatus, jqXHR) {
+        console.log(data)
+        $("#insights_time").text(data)
+        $("#node_date").text(start_date + "-" + end_date)
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      }
+    });
+  });
+
+
+  $("#senddata").click(function () {
+    $('.filter').addClass('d-none');
+    $('.stats-area').removeClass('d-none')
+  });
+
+  $("#back-btn").click(function () {
+    $('.filter').removeClass('d-none');
+    $('.stats-area').addClass('d-none')
+  });
+
+
+
+
+  function printDiv(divId) {
+    var divToPrint = document.getElementById(divId);
+
+    //var navbar = document.getElementById("accordionSidebar");
+    //navbar.style.visibility = 'hidden';
+
+    divToPrint.style.visibility = 'visible';
+    window.print();
+    // Reset visibility after printing (optional)
+    divToPrint.style.visibility = 'visible';
+    //navbar.style.visibility = 'visible';
+  }
+
+
+  var printButton = document.getElementById('print_graph_1');
+  printButton.addEventListener('click', function () {
+    printDiv("canvas_div_pdf")
+  });
+
+
+
+  $("#print_graph").click(function (e) {
+    e.preventDefault();
+    uuid = $("#uuid_graph").val(),
+      start_date = $("#start_date").val(),
+      end_date = $("#end_date").val(),
+      start_time = $("#start_time").val(),
+      end_time = $("#end_time").val(),
+      $("#node_name").text(uuid)
+    $("#node_date").text(start_date + "-" + end_date)
+    $("#node_time").text(start_time + "-" + end_time)
+
+    //var HTML_Width = $("#pdf").width();
+    //var HTML_Height = $("#pdf").height();
+    //var top_left_margin = 15;
+    //var PDF_Width = HTML_Width+(top_left_margin*2);
+    //var PDF_Height = (PDF_Width*1.5)+(top_left_margin*2);
+    //var canvas_image_width = HTML_Width;
+    //var canvas_image_height = HTML_Height;
+
+    var HTML_Width = 1080;
+    var HTML_Height = 720;
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width + (top_left_margin * 2);
+    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+
+    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+    html2canvas($("#canvas_div_pdf")[0], { allowTaint: true }).then(function (canvas) {
+      canvas.getContext('2d');
+
+      console.log(canvas.height + "  " + canvas.width);
+
+
+      var imgData = canvas.toDataURL("image/jpeg", 1.0);
+      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+      for (var i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(PDF_Width, PDF_Height);
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+      }
+
+      pdf.save("Document.pdf");
+    });
+
+  });
+
+
+  $("#glance").click(function (e) {
+    e.preventDefault();
+    var HTML_Width = $("#appender").width();
+    var HTML_Height = $("#appender").height();
+    var top_left_margin = 15;
+    var PDF_Width = HTML_Width + (top_left_margin * 2);
+    var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+    var canvas_image_width = HTML_Width;
+    var canvas_image_height = HTML_Height;
+
+    var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+    html2canvas($("#appender")[0], { allowTaint: true }).then(function (canvas) {
+      canvas.getContext('2d');
+
+      console.log(canvas.height + "  " + canvas.width);
+
+
+      var imgData = canvas.toDataURL("image/jpeg", 1.0);
+      var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+      pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+
+
+      for (var i = 1; i <= totalPDFPages; i++) {
+        pdf.addPage(PDF_Width, PDF_Height);
+        pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+      }
+
+      pdf.save("Document.pdf");
+    });
+
+  });
+
+  //$("#sidebarToggleTop").click();
+
+  //   $("#print_table").click(function (e){
+  //     create_token();
+  //     var payload_add = {
+  //     uuid: $("#uuid_graph").val(),
+  //     field: $("#field").val(),
+  //     start_date: $("#start_date").val(),
+  //     end_date: $("#end_date").val(),   
+  //     start_time: $("#start_time").val(),
+  //     end_time: $("#end_time").val(),    
+  //     };
+  //     headers_payload = {'Authorization': 'Bearer ' + y,'Content-type':'application/json'};
+  //     $.ajax({
+  //     url: "/generateinvoice/",
+  //     headers: headers_payload,
+  //     type: "GET",
+  //     data: JSON.stringify(payload_add),
+  //     success: function (data, textStatus, jqXHR) {
+  //       data
+  //     }
+  //     })
+
+  // });
+
+  // $("#print_table").click(function (){
+  //   uuid= $("#uuid_graph").val(),
+  //   start_date= $("#start_date").val(),
+  //   end_date= $("#end_date").val(),   
+  //   start_time= $("#start_time").val(),
+  //   end_time= $("#end_time").val(),
+  //   $("#print_table").attr("href", "/generateinvoice/"+uuid+"/"+start_time+"/"+end_date+"/"+start_date+"/"+end_date+"/")
+  // })
+
+
+
+  $("body").on("click", "#id-1", function () {
+    $("#appender").removeClass("d-none")
+    $(".class-2").addClass("d-none")
+    $(".class-3").addClass("d-none")
+    $(".class-4").addClass("d-none")
+  });
+
+  $("body").on("click", "#id-2", function () {
+    $(".class-2").removeClass("d-none")
+    $("#appender").addClass("d-none")
+    $(".class-3").addClass("d-none")
+    $(".class-4").addClass("d-none")
+  });
+
+  $("body").on("click", "#id-3", function () {
+    $(".class-3").removeClass("d-none")
+    $(".class-2").addClass("d-none")
+    $("#appender").addClass("d-none")
+    $(".class-4").addClass("d-none")
+  });
+
+  $("body").on("click", "#id-4", function () {
+    $(".class-4").removeClass("d-none")
+    $(".class-3").addClass("d-none")
+    $(".class-2").addClass("d-none")
+    $("#appender").addClass("d-none")
+  });
+
+  // $("body").on("click", "#node1", function () {
+
+  //   navigator.geolocation.getCurrentPosition(success, error);
+
+  //   function success(position) {
+  //     console.log(position.coords.latitude);
+  //     $('#latitude').val(position.coords.latitude);
+  //     console.log(position.coords.longitude);
+  //     $('#longitude').val(position.coords.longitude);
+
+  //     var GEOCODING = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + '%2C' + position.coords.longitude + '&language=en';
+
+  //     $.getJSON(GEOCODING).done(function (location) {
+  //       console.log(location)
+  //     })
+
+  //   }
+
+  //   function error(err) {
+  //     console.log(err)
+  //   }
+
+  // });
+
+  $("body").on("click", "#create_user_button", function (e) {
+    create_token();
+    var payload = {
+      first_name: $("#user_fname").val(),
+      last_name: $("#user_lname").val(),
+      username: $("#user_uname").val(),
+      password: $("#user_pass").val(),
+      role: $('input[name="roles"]:checked').val(),
+    };
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' };
+
+    if ((payload.first_name).length == 0 || (payload.last_name).length == 0 || (payload.username).length == 0 || (($('input[name="roles"]:checked')).length) == 0) {
+      jQuery.noConflict();
+      $("#user_modal").modal("hide");
+      $('#fields').modal('show');
+    }
+    else {
+      $.ajax({
+        url: "/user_veiw",
+        type: "POST",
+        headers: headers_payload,
+        data: JSON.stringify(payload),
+        success: function (data, textStatus, jqXHR) {
+          jQuery.noConflict();
+          $('#user_create').modal('show');
+
+          q = `<tr class="user_row_${data}">
+                <td>${data}</td>
+                <td>${payload.first_name} ${payload.last_name}</td>
+                <td>${payload.username}</td>
+                <td class="${payload.role}_${data}" >${payload.role}</td>
+                <td><div class=" btn-group">
+                  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Roles
+                  </button>
+                  <div class="mask dropdown-menu">
+                    <a class="mask dropdown-item super_admin" id="${data}">Super admin</a>
+                    <a class="mask dropdown-item admin" id="${data}">admin</a>
+                    <a class="mask dropdown-item observer" id="${data}">observer</a>
+                    <a class="mask dropdown-item user" id="${data}">user</a>
+                  </div>
+                </div></td>
+                <td><button type="button" class="btn btn-danger delete_user" id="${data}">Delete</button></td>
+              </tr>`,
+            $("#user_table").append(q),
+            $("#user_modal").modal("hide")
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          alert(errorThrown);
+        },
+      });
+    }
+
+
+  });
+
+  $("body").on("click", ".delete_user", function (e) {
+    create_token();
+
+    id = this.id
+
+    var payload = {
+      id: id,
+    }
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' }
+    $.ajax({
+      url: "/user_veiw",
+      type: "DELETE",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        $(".user_row_" + id).hide()
+        $('#user_delete_modal').modal('show');
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+
+
+  $("body").on("click", ".super_admin", function (e) {
+    create_token();
+
+    id = this.id
+
+    var payload = {
+      id: id,
+      role: 'administrator',
+    }
+    //console.log(payload)
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' }
+
+    $.ajax({
+      url: "/user_veiw",
+      type: "PUT",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        $(".administrator_" + id).text("administrator")
+        $(".admin_" + id).text("administrator")
+        $(".observer_" + id).text("administrator")
+        $(".user_" + id).text("administrator")
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+
+  $("body").on("click", ".admin", function (e) {
+    create_token();
+
+    id = this.id
+
+    var payload = {
+      id: id,
+      role: 'admin',
+    }
+    console.log(payload)
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' }
+
+    $.ajax({
+      url: "/user_veiw",
+      type: "PUT",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        $(".administrator_" + id).text("admin")
+        $(".admin_" + id).text("admin")
+        $(".observer_" + id).text("admin")
+        $(".user_" + id).text("admin")
+
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+  $("body").on("click", ".observer", function (e) {
+    create_token();
+
+    id = this.id
+
+    var payload = {
+      id: id,
+      role: 'observer',
+    }
+    //console.log(payload)
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' }
+
+    $.ajax({
+      url: "/user_veiw",
+      type: "PUT",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        $(".administrator_" + id).text("observer")
+        $(".admin_" + id).text("observer")
+        $(".observer_" + id).text("observer")
+        $(".user_" + id).text("observer")
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+  $("body").on("click", ".user", function (e) {
+    create_token();
+
+    id = this.id
+
+    var payload = {
+      id: id,
+      role: 'user',
+    }
+    console.log(payload)
+
+    headers_payload = { 'Authorization': 'Bearer ' + y, 'Content-type': 'application/json' }
+
+    $.ajax({
+      url: "/user_veiw",
+      type: "PUT",
+      headers: headers_payload,
+      data: JSON.stringify(payload),
+      success: function (data, textStatus, jqXHR) {
+        $(".administrator_" + id).text("user")
+        $(".admin_" + id).text("user")
+        $(".observer_" + id).text("user")
+        $(".user_" + id).text("user")
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      },
+    });
+
+  });
+
+
+  })
+
+</script>

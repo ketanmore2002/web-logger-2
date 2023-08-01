@@ -1,0 +1,84 @@
+from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
+from .models import *
+# Register your models here.
+
+
+
+
+
+
+
+@admin.register(nodes_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+
+# admin.site.register(voltage_temp)
+# admin.site.register(current_temp)
+# admin.site.register(power_temp)
+# admin.site.register(generator_speed_temp)
+# admin.site.register(windspeed_temp)
+
+admin.site.register(voltageR_parameters)
+# admin.site.register(current_parameters)
+# admin.site.register(power_parameters)
+# admin.site.register(generator_speed_parameters)
+# admin.site.register(windspeed_parameters)
+# admin.site.register(battery_parameters)
+# admin.site.register(node_health)
+
+# admin.site.register(current_model)
+
+admin.site.register(time_stamp)
+
+
+@admin.register(voltageR_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(voltageY_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(voltageB_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(currentR_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+@admin.register(currentY_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+@admin.register(currentB_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(power_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(generator_speed_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(windspeed_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(torque_model)
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+
+
+
+from django.contrib import admin
+# Need to import this since auth models get registered on import.
+import django.contrib.auth.admin
+import django.contrib.auth.models
+from django.contrib import auth
+
+admin.site.unregister(auth.models.User)
+admin.site.unregister(auth.models.Group)

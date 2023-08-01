@@ -1,0 +1,1621 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>Dashboard</title>
+
+  <!-- Custom fonts for this template-->
+  <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tinos&display=swap" rel="stylesheet">
+
+
+  <!-- Custom styles for this template-->
+  <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet" />
+  <style>
+    .backgroundColor {
+      background: linear-gradient(90deg, #414850, #131720);
+    }
+
+    .blueGradient {
+      background: linear-gradient(176deg, #3D9DEA, #4A4EEE);
+    }
+
+    .blackGradient {
+      /* background: linear-gradient(90deg, #414850, #131720); */
+      background: linear-gradient(120deg, #343A4F, #0F1620);
+    }
+
+    .borderRadiusTop {
+      border-radius: 20px 20px 0 0;
+    }
+
+    .borderRadiusBottom {
+      border-radius: 0 0 20px 20px;
+    }
+
+    .textColor {
+      color: #b6d5f8;
+    }
+
+    .center-button-wrapper {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3; /* Higher z-index to keep the button above the blur */
+    }
+
+    .center-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: transparent;
+      border: none;
+      outline: none;
+    }
+
+    .blur-div {
+      filter: blur(5px); /* Apply blur effect to the background image */
+    }
+
+    .backgroundImage {
+      background-color: #010926;
+      background-image: url("{% static 'card5.svg' %}");
+      /* background-attachment: fixed;
+      background-size: cover; */
+      /* background-position-y: -80px; */
+    }
+
+    * {
+      font-family: 'Tinos', serif;
+    }
+
+    .dropdown-menu {
+      width: 400px !important;
+      min-height: 100px !important;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      
+      #canvas_div_pdf,
+      #canvas_div_pdf * {
+        visibility: visible;
+      }
+
+      #canvas_div_pdf {
+        position: relative;
+        margin: 0;
+        padding: 0;
+        page-break-inside: avoid;
+        /* margin-right: 20px; */
+      }
+
+      @page {
+        margin: 0.2cm;
+      }
+
+      #accordionSidebar{
+        display: none;
+      }
+
+    }
+
+    
+  </style>
+
+</head>
+
+<body id="page-top">
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+      <!-- Sidebar - Brand -->
+      <a class="sidebar-brand d-flex align-items-center" href="">
+        <div class="sidebar-brand-text mx-1">{{request.user.username}} </div>
+      </a>
+      <hr class="sidebar-divider my-0" />
+
+      <li class="nav-item d-flex align-items-center active">
+        <a class="nav-link" id="">
+          Role :<span id="menu_user" style="font-size:larger;"> {{ request.user.groups.all.0 }}</span></a>
+      </li>
+
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0" />
+
+      <!-- Nav Item - Dashboard -->
+      <li class="nav-item active">
+        <a class="nav-link" id="id-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sliders"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z" />
+          </svg>
+          <span style="font-size:larger;">Dashboard</span></a>
+      </li>
+      <hr class="sidebar-divider" />
+      <li class="nav-item active">
+        <a class="nav-link" id="id-2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z" />
+          </svg>
+          <span style="font-size:larger;">See Trends</span></a>
+      </li>
+      <hr class="sidebar-divider" />
+      {% for group in user.groups.all %}
+      {% if group.name == 'administrator' or group.name == 'admin'%}
+      <li class="nav-item active">
+        <a class="nav-link" id="id-3">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill"
+            viewBox="0 0 16 16">
+            <path
+              d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7Zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216ZM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+          </svg>
+          <span style="font-size:larger;">User Management</span></a>
+      </li>
+      <hr class="sidebar-divider" />
+      {% endif %}
+      {% endfor %}
+      {% for group in user.groups.all %}
+      {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
+      <li class="nav-item active">
+        <a class="nav-link" id="id-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-diagram-3-fill" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zm-6 8A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm6 0A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm6 0a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1z" />
+          </svg>
+          <span style="font-size:larger;">Backup</span></a>
+      </li>
+      <hr class="sidebar-divider" />
+      {% endif %}
+      {% endfor %}
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content" class="">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+          <!-- Sidebar Toggle (Topbar) -->
+          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+            <i class="fa fa-bars"></i>
+          </button>
+
+          <!-- Topbar Search -->
+          <ul class="mt-2 justify-content-start text-dark">
+            <h2>Breeze Power Mill Data Logger</h2>
+            <!-- Dropdown - User Information -->
+          </ul>
+
+          <!-- Topbar Navbar -->
+          <ul class="navbar-nav ml-auto">
+            {% for group in user.groups.all %}
+            {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+
+            <li class="nav-item dropdown no-arrow" id="">
+
+              <a class="nav-link dropdown-toggle" id="notification-center" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false"><span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                  <button type="button" class="btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                      class="bi bi-bell-fill" viewBox="0 0 16 16">
+                      <path
+                        d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z" />
+                    </svg>
+                    <span class="badge badge-light" id="notifications-counter"></span>
+                  </button>
+                </span>
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="notification-center" id="notification-list">
+                {% comment %} {% if notifications.count > 0 %}
+                {% for notification in notifications %}
+                <a class="dropdown-item bg-transparent" id="notification-{{notification.node_id}}">
+                  <div class="noti rounded border-dark border">
+                    <div class="toast-header">
+                      <strong class="mr-auto h4"> {{notification.uuid}} node as been deleted</strong>
+                    </div>
+                    <div class="toast-body">
+                      Please Take a action :
+                    </div>
+                      <div class="row toast-body">
+                        <button type="button" class="btn btn-primary col-4 mx-2 noti-center" id="{{notification.node_id}}"
+                          data-node-name="{{notification.uuid}}">Change User</button>
+                        <button type="button" class="btn btn-danger col-4 mx-1 noti-delete" id="{{notification.node_id}}"
+                          data-node-name="{{notification.uuid}}">Delete Node</button>
+                      </div>
+                  </div>
+                </a>
+                {% endfor %}
+                {% else %}
+
+                <a class="dropdown-item bg-transparent" id="">
+                  <div class="noti rounded border-dark border">
+                    <div class="toast-header">
+                      <strong class="mr-auto h4"> No Notifications </strong>
+                    </div>
+                  </div>
+                </a>
+
+                {% endif %} {% endcomment %}
+              </div>
+
+              <!-- Dropdown - User Information -->
+            </li>
+            {% endif %}
+            {% endfor %}
+
+            <!-- Nav Item - Messages -->
+            {% for group in user.groups.all %}
+            {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
+
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" id="node1" role="button"><span
+                  class="mr-2 d-none d-lg-inline text-gray-600 small"><button type="button" class="btn btn-primary">Add
+                    Node</button>
+                </span>
+              </a>
+              <!-- Dropdown - User Information -->
+            </li>
+
+            {% endif %}
+            {% endfor %}
+
+
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/glance" target="_blank" role="button"><span
+                  class="mr-2 d-none d-lg-inline text-gray-600 small"><button type="button"
+                    class="btn btn-primary">Glance Tab</button></span></a>
+              <!-- Dropdown - User Information -->
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <li class="nav-item dropdown no-arrow">
+              <a class="nav-link dropdown-toggle" href="/logout" id="logout-btn" role="button"><span
+                  class="mr-2 d-none d-lg-inline text-gray-600 small"><button type="button"
+                    class="btn btn-primary">Logout</button></span></a>
+              <!-- Dropdown - User Information -->
+            </li>
+          </ul>
+        </nav>
+
+        <div class="container-fluid">
+          <div class="row" id="appender">
+            {% for i in data %}
+            <div
+            class="position-relative card d-flex flex-column justify-content-between border-0 py-2 backgroundImage overflow-hidden "
+            id="delete_node{{i.id}}" style="width: 380px; border-radius: 20px 20px 20px 20px;">
+
+              <div class="row border-bottom border-secondary mb-1">
+
+                <div class="col-6 d-flex flex-column textColor pb-2 mx-4 " style="z-index: 10;">
+                  <h4 class="font-weight-bold mb-1">UID : <a class="textColor UID{{i.id}}"> {{i.uuid}} </a></h4>
+                  <h6 class="textColor roboto" style="font-weight: 600;">Location: <a
+                      class="textColor location{{i.id}}">
+                      {{i.location}}</a></h6>
+                </div>
+
+                <div class="col-4 textColor pb-2">
+                  <h3 class="justify-content-end" style="font-weight: 500; font-size: 25px">
+                    <a id="faulty{{i.uuid}}"></a>
+                  </h3>
+                </div>
+              </div>
+
+              <div class="flex-grow-1 d-flex flex-column textColor mx-4 px-2 " style="z-index: 10;">
+
+                  {% for k in voltageR_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between ">
+                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;">  Voltage (R)               <a id="voltageR-{{k.uuid}}" >{{k.voltage}}</a> V</pre>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in voltageY_para %}
+                  {% if i.uuid == k.uuid %}
+                    <div class="w-100 d-flex align-items-center justify-content-between ">
+                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Voltage (Y)               <a id="voltageY-{{k.uuid}}" ></a> V</pre>
+                    </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in voltageB_para %}
+                  {% if i.uuid == k.uuid %}
+                    <div class="w-100 d-flex align-items-center justify-content-between ">
+                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Voltage (B)               <a id="voltageB-{{k.uuid}}" ></a> V</pre>
+                    </div>
+                  {% endif %}
+                  {% endfor %}
+                  
+
+                  {% for k in currentR_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (R)               <a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in currentY_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (Y)               <a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in currentB_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (B)               <a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+
+                  {% for k in power_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Power                     <a id="power-{{k.uuid}}" > {{k.power}} </a> W</pre>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in generator_speed_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Generator Speed           <a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</pre>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in windspeed_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> WindSpeed                 <a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</pre>                    
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+                  {% for k in torque_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> torque                    <a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</pre>                    
+                  </div>
+                  {% endif %}
+                  {% endfor %}
+
+
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Battery                   <a id="battery-{{i.uuid}}">{{i.battery}}</a> %</pre>
+                  </div>
+              </div>
+
+              <div class="flex-grow-0 d-flex flex-column px-4 py-1 mx-4 border border-dark"
+                style="border-radius: 12px;">
+
+                <div class="mb-1 d-flex align-items-center justify-content-between">
+                  <span class="mr-2 text-white font-weight-bold roboto">Username:</span>
+                  <h6 class="font-weight-bold mb-0 text-white">{{i.user_name}}</h6>
+                </div>
+
+                <div class="mb-1 d-flex align-items-center justify-content-between">
+                  <span class="mr-2 text-white font-weight-bold roboto">Machine :</span>
+                  <h6 class="font-weight-bold mb-0 text-white"><a class="textColor machine{{i.id}}"> {{i.machine}} </a>
+                  </h6>
+                </div>
+
+                <div class=" d-flex align-items-center justify-content-between">
+                  <span class="mr-2 text-white font-weight-bold roboto">Sub Location:</span>
+                  <h6 class="font-weight-bold mb-0 text-white"><a class="textColor sub_location{{i.id}}">
+                      {{i.sub_location}}</a></h6>
+                </div>
+
+                {% for group in user.groups.all %}
+                {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
+
+                <div class="row">
+                  <div class="col-6 w-100 d-flex align-items-center justify-content-between mt-2"
+                    style="border-radius: 8px;">
+                    <button class="w-100 text-center px-4 py-1 text-white border-0 bg-primary font-weight-bold edit"
+                      id="{{i.uuid}}" style="border-radius: 8px; background-color: #fc5296;
+                      background-image: linear-gradient(315deg, #fc5296 0%, #f67062 74%);">
+                      Edit
+                    </button>
+                  </div>
+
+                  <div class=" col-6 w-100 d-flex align-items-center justify-content-between mt-2"
+                    style="border-radius: 8px;">
+                    <button class="w-100 text-center px-4 py-1 text-white border-0 bg-primary font-weight-bold lala"
+                      id="{{i.id}}" style="border-radius: 8px; background-color: #fc5296;
+                    background-image: linear-gradient(315deg, #fc5296 0%, #f67062 74%);">
+                      Delete
+                    </button>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+
+                <div class="m-2 d-flex align-items-center justify-content-between">
+                  <span class="mr-2 text-white font-weight-bold roboto">Last Updated :</span>
+                  <h6 class="font-weight-bold mb-0 text-white" id="time{{i.uuid}}"></h6>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Content Row -->
+        </div>
+        <div class="class-2 d-none">
+          <div class="card shadow m-4 filter" id="filter">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Statistics</h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              Fill the value below to get the trends for nodes.
+              <form>
+                <div class="form-row align-items-center my-1 m-5">
+                  <div class="col-sm-2 my-1">
+                    <label for="uuid_graph">UID</label>
+                    <input type="text" class="form-control" id="uuid_graph" placeholder="UID">
+                  </div>
+                  <div class="col-sm-2 my-1">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" class="form-control" id="start_date" placeholder="start date">
+                  </div>
+                  <div class="col-sm-2 my-1">
+                    <label for="end_date">End Date</label>
+                    <input type="date" class="form-control" id="end_date" placeholder="end date">
+                  </div>
+                  <div class="col-sm-2 my-1">
+                    <label for="start_time">Start Time</label>
+                    <input type="time" class="form-control" id="start_time" placeholder="start time">
+                  </div>
+                  <div class="col-sm-2 my-1">
+                    <label for="end_time">End Time</label>
+                    <input type="time" class="form-control" id="end_time" placeholder="end time">
+                  </div>
+                  <div class="col-sm-2 my-1 align-self-end">
+                    <button type="submit" class="btn btn-primary" id="senddata">Submit</button>
+                  </div>
+                </div>
+            </div>
+            </form>
+          </div>
+          <div class="row justify-content-center">
+
+            <div class="col-xl-11 col-lg-6 m-2 d-none stats-area" id="stats-area">
+
+              <!-- Area Chart -->
+              <div class="card shadow mb-4" id="pdf">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary"><!-- Area Chart -->
+                    <button type="submit" class="btn btn-primary float-right mx-2" id="print_graph_1" onclick="printDiv('canvas_div_pdf')">Print Graph</button>
+                    <a id="print_table" href="#" target="_blank"><button type="submit" class="btn btn-primary float-right mx-2">See Table</button></a>
+                    <button type="button" class="btn btn-primary float-right mx-2" data-toggle="modal" data-target="#myModal">See Insights</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle float-left mx-2" viewBox="0 0 16 16" id="back-btn">
+                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                    </svg>
+                  </h6>
+                </div>
+                <div class="card-body canvas_div_pdf" id="canvas_div_pdf">
+                  <code class="col-2 mx-2 my-2">Node :</code><a id="node_name"></a>
+                  
+                  <code class="col-2 mx-2 my-2">Date :</code> <a id="node_date"></a>
+                  
+                  <code class="col-2 mx-2 my-2">Time :</code> <a id="node_time"></a>
+                  
+                  <div class="row">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">current(R)</th>
+                          <th scope="col">current(Y)</th>
+                          <th scope="col">current(B)</th>
+
+                          <th scope="col">power</th>
+
+                          <th scope="col">voltage(R)</th>
+                          <th scope="col">voltage(Y)</th>
+                          <th scope="col">voltage(B)</th>
+
+                          <th scope="col">generator speed </th>
+                          <th scope="col">WindSpeed </th>
+                          <th scope="col">Torque</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th scope="row">standard deviation</th>
+                          <td id="sd_currentR"></td>
+                          <td id="sd_currentY"></td>
+                          <td id="sd_currentB"></td>
+                          <td id="sd_power"></td>
+                          <td id="sd_voltageR"></td>
+                          <td id="sd_voltageY"></td>
+                          <td id="sd_voltageB"></td>
+                          <td id="sd_generator_speed"></td>
+                          <td id="sd_windspeed"></td>
+                          <td id="sd_torque"></td>
+                        </tr>
+                        <tr>
+                          <th scope="row">variance</th>
+                          <td id="vari_currentR"></td>
+                          <td id="vari_currentY"></td>
+                          <td id="vari_currentB"></td>
+
+                          <td id="vari_power"></td>
+
+                          <td id="vari_voltageR"></td>
+                          <td id="vari_voltageY"></td>
+                          <td id="vari_voltageB"></td>
+
+                          <td id="vari_generator_speed"></td>
+
+                          <td id="vari_windspeed"></td>
+                          <td id="vari_torque"></td>
+
+                        </tr>
+                        <tr>
+                          <th scope="row">mean</th>
+                          <td id="mean_currentR"></td>
+                          <td id="mean_currentY"></td>
+                          <td id="mean_currentB"></td>
+
+                          <td id="mean_power"></td>
+
+                          <td id="mean_voltageR"></td>
+                          <td id="mean_voltageY"></td>
+                          <td id="mean_voltageB"></td>
+
+                          <td id="mean_generator_speed"></td>
+
+                          <td id="mean_windspeed"></td>
+                          <td id="mean_torque"></td>
+
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <hr>
+                  <div class="chart-area" id="graph_div">
+                    {% comment %} <canvas id="myAreaChart"></canvas> {% endcomment %}
+                  </div>
+                  <hr>
+                  {% comment %} <div class="row mx-4 my-3">
+                    <div class="" style="color:#d45087">●</div>
+                    <p> current</p>
+                    <div class="" style="color:#e9c7eb">●</div>
+                    <p> Power</p>
+                    <div class="" style="color:#000000">●</div>
+                    <p> voltage</p>
+                    <div class="" style="color:#a60ff2">●</div>
+                    <p> generator_speed</p>
+                    <div class="" style="color:#0febf2">●</div>
+                    <p> windspeed</p>
+                  </div> {% endcomment %}
+                </div>
+              </div>
+
+              {% comment %} <div class="card shadow mb-4 class-2 d-none">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Insights</h6>
+                </div>
+                <div class="card-body">
+                  <p>Your Node Went Faulty for <a id="insights_week">____</a> Time(s) In This Week</p>
+                  <hr>
+                  <p>Your Node Went Faulty for <a id="insights_month">____</a> Time(s) In Last 30 Days</p>
+                  <hr>
+                  <p>Your Node Went Faulty for <a id="insights_time">____</a> Time(s) between
+                  <div id="node_date"></div>
+                  </p>
+                </div>
+              </div> {% endcomment %}
+            </div>
+          </div>
+        </div>
+
+        {% for group in user.groups.all %}
+        {% if group.name == 'administrator' or group.name == 'admin'%}
+        <div class="card shadow mb-4 class-3 mx-3 d-none">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">User Management</h6>
+          </div>
+          <div class="card-header py-3">
+            <button type="button" class="btn btn-primary" id="add_user">Add User</button>
+          </div>
+          <div class="card-body class-3 d-none">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%">
+                <thead>
+                  <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>user name</th>
+                    <th>role</th>
+                    <th>change role</th>
+                    <th>delete user</th>
+                  </tr>
+                </thead>
+                <tbody id="user_table">
+                  {% for i in users %}
+                  <tr class="user_row_{{i.id}}">
+                    <td>{{i.id}}</td>
+                    <td>{{i.first_name}} {{i.last_name}}</td>
+                    <td>{{i.username}}</td>
+                    <td class="{{ i.groups.all.0 }}_{{i.id}}">{{ i.groups.all.0 }}</td>
+                    {% if i.groups.all.0.name != 'administrator' %}
+                    <td>
+                        <div class=" btn-group">
+                          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Roles
+                          </button>
+                          <div class="mask dropdown-menu">
+                            {% for group in user.groups.all %}
+                            {% if group.name == 'administrator'%}
+                            <a class="mask dropdown-item super_admin" id="{{i.id}}">administrator</a>
+                            <a class="mask dropdown-item admin" id="{{i.id}}">admin</a>
+                            {% endif %}
+                            {% endfor %}
+                            <a class="mask dropdown-item observer" id="{{i.id}}">observer</a>
+                            <a class="mask dropdown-item user" id="{{i.id}}">user</a>
+                          </div>
+                        </div>
+                      </td>
+                        {% else %}
+                     <td>NA</td>
+                      {% endif %}
+
+                      {% for group in user.groups.all %}
+                      {% if group.name == 'administrator' %}
+                      {% if i.groups.all.0.name == 'administrator' %}
+                         <td>NA</td>
+                      {% else %}
+                      <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
+                      {% endif %}
+                      {% elif group.name == 'admin' %}
+                          {% if i.groups.all.0.name == 'administrator' or i.groups.all.0.name == 'admin' %}
+                              <td>NA</td>
+                          {% elif i.groups.all.0.name == 'user' or i.groups.all.0.name == 'observer' %}
+                              <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
+                          {% endif %}
+                      {% endif %}
+                  {% endfor %}
+                  
+
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="card shadow mb-4 class-4 mx-3 d-none">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Backup</h6>
+          </div>
+          {% comment %} <div class="card-header py-3">
+            <button type="button" class="btn btn-primary" id="add_user">Add User</button>
+          </div> {% endcomment %}
+          <div class="card-body class-4 d-none">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="dataTable" width="100%">
+                <thead>
+                  <tr>
+                    <th>Paramater Name</th>
+                    <th>Save Backup</th>
+                    <th>Upload Backup</th>
+                  </tr>
+                </thead>
+
+                <tbody id="">
+                  <tr class="">
+                    <td>Voltage(R)</td>
+                    <td><a href="/admin/node/voltager_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltager_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Voltage(Y)</td>
+                    <td><a href="/admin/node/voltagey_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltagey_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Voltage(B)</td>
+                    <td><a href="/admin/node/voltageb_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltageb_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Current(R)</td>
+                    <td><a href="/admin/node/currentr_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/current_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Current(Y)</td>
+                    <td><a href="/admin/node/currenty_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/currenty_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Current(B)</td>
+                    <td><a href="/admin/node/currentb_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/currentb_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Generator Speed</td>
+                    <td><a href="/admin/node/generator_speed_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/generator_speed_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Power</td>
+                    <td><a href="/admin/node/power_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/power_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>WindSpeed</td>
+                    <td><a href="/admin/node/windspeed_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/windspeed_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                  <tr class="">
+                    <td>Torque</td>
+                    <td><a href="/admin/node/torque_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/torque_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                  </tr>
+                </tr><tr class="">
+                  <td>Nodes</td>
+                  <td><a href="/admin/node/nodes_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
+                  <td><a href="/admin/node/nodes_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                </tr>
+                </tbody>
+
+              </table>
+            </div>
+            <div class="alert alert-primary" role="alert">
+              Note : Download backup for each paramater everyday.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <!-- End of Content Wrapper -->
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Select "Logout" below if you are ready to end your current session.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            Cancel
+          </button>
+          <a class="btn btn-primary" href="">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Node</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+          {% csrf_token %}
+          <div class="modal-body" id="my-checkbox-group">
+            <div class="form-group">
+              <label for="UID">UID</label>
+              <input type="text" class="form-control" id="UID" name="uuid" placeholder="UID" />
+            </div>
+            <div class="form-group">
+              <label for="location">location</label>
+              <input type="text" class="form-control" id="location" name="location" placeholder="location" />
+            </div>
+            <div class="form-group">
+              <label for="sub_location">sub_location</label>
+              <input type="text" class="form-control" id="sub_location" name="sub_location"
+                placeholder="sub_location" />
+            </div>
+            <div class="form-group">
+              <label for="machine">machine</label>
+              <input type="text" class="form-control" id="machine" name="machine" placeholder="machine" />
+            </div>
+            <div class="form-group">
+              <label for="email">email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="email" />
+            </div>
+
+{% comment %} ======================================================================================================= {% endcomment %}
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="currentR-cb">
+              <label class="custom-control-label" for="currentR-cb">current(R)</label>
+            </div>
+
+            <div class="row mt-4 currentR-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentR low" name="currentR_low"
+                  id="currentR_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high"
+                  id="currentR_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="currentY-cb">
+              <label class="custom-control-label" for="currentY-cb">current(Y)</label>
+            </div>
+
+            <div class="row mt-4 currentY-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentY low" name="currentY_low"
+                  id="currentY_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high"
+                  id="currentY_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="currentB-cb">
+              <label class="custom-control-label" for="currentB-cb">current(B)</label>
+            </div>
+
+            <div class="row mt-4 currentB-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentB low" name="currentB_low"
+                  id="currentB_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="currentB high" name="currentB_high"
+                  id="currentB_high">
+              </div>
+            </div>
+{% comment %} ======================================================================================================= {% endcomment %}
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="voltageR-cb">
+              <label class="custom-control-label" for="voltageR-cb">voltage(R)</label>
+            </div>
+
+            <div class="row mt-4 voltageR-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" name="voltageR_low" class="form-control" placeholder="voltageR_low"
+                  name="voltage_low" id="voltageR_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="voltageR_high" name="voltageR_high"
+                  id="voltageR_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="voltageY-cb">
+              <label class="custom-control-label" for="voltageY-cb">voltage(Y)</label>
+            </div>
+
+            <div class="row mt-4 voltageY-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" name="voltageY_low" class="form-control" placeholder="voltageY_low"
+                  name="voltageY_low" id="voltageY_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="voltageY_low" name="voltageY_low"
+                  id="voltageY_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="voltageB-cb">
+              <label class="custom-control-label" for="voltageB-cb">voltage(B)</label>
+            </div>
+
+            <div class="row mt-4 voltageB-box d-none">
+              <div class="col">
+                <input type="text" value="undefined" name="voltageB_low" class="form-control" placeholder="voltageB_low"
+                  name="voltageB_low" id="voltageB_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="voltageB_high" name="voltageB_high"
+                  id="voltageB_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="generator_speed-cb">
+              <label class="custom-control-label" for="generator_speed-cb">generator speed</label>
+            </div>
+
+            <div class="row mt-4 d-none generator_speed-box ">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low"
+                  name="generator_speed_low" id="generator_speed_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"
+                  name="generator_speed_high" id="generator_speed_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" name="" id="windspeed-cb">
+              <label class="custom-control-label" for="windspeed-cb">windspeed</label>
+            </div>
+
+            <div class="row mt-4 d-none windspeed-box">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="windspeed_low"
+                  name="windspeed_low" id="windspeed_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="windspeed_high"
+                  name="windspeed_high" id="windspeed_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="power-cb">
+              <label class="custom-control-label" for="power-cb">Power</label>
+            </div>
+
+            <div class="row mt-4 d-none power-box">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="Power low" id="power_low"
+                  name="power_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="Power high" id="power_high"
+                  name="power_high">
+              </div>
+            </div>
+
+            <div class="custom-control custom-checkbox my-2" id="">
+              <input type="checkbox" class="custom-control-input" id="torque-cb">
+              <label class="custom-control-label" for="torque-cb">Torque</label>
+            </div>
+
+            <div class="row mt-4 d-none torque-box">
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="torque low" id="torque_low"
+                  name="torque_low">
+              </div>
+              <div class="col">
+                <input type="text" value="undefined" class="form-control" placeholder="torque high" id="torque_high"
+                  name="torque_high">
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_node">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary" id="add_node">
+              Add Node
+            </button>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--  edit user node -->
+
+  <div class="modal fade" id="edit-node-modal" tabindex="-1" role="dialog" aria-labelledby="edit-node-modal"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="edit-node-modal">Edit Node</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="">
+          <div class="form-group">
+            <label for="UID">UID</label>
+            <input type="text" class="form-control" id="edit-node-modal-UID" name="uuid" value="" placeholder="UID" disabled/>
+          </div>
+          <div class="form-group">
+            <label for="location">location</label>
+            <input type="text" class="form-control" id="edit-node-modal-location" name="location" value="" placeholder="location" />
+          </div>
+          <div class="form-group">
+            <label for="sub_location">sub_location</label>
+            <input type="text" class="form-control" id="edit-node-modal-sub_location" name="sub_location" value=""
+              placeholder="sub_location" />
+          </div>
+          <div class="form-group">
+            <label for="machine">machine</label>
+            <input type="text" class="form-control" id="edit-node-modal-machine" name="machine" placeholder="machine" value=""/>
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input type="email" class="form-control" id="edit-node-modal-email" name="email" placeholder="email" value=""/>
+          </div>
+
+          <div class="alert alert-success" role="alert">
+            Select the paramaters you want to edit. Unchecked paramaters will be removed .
+          </div>
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentR-cb-edit">
+            <label class="custom-control-label" for="currentR-cb-edit">current(R)</label>
+          </div>
+
+          <div class="row mt-4 currentR-box-edit d-none">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="currentR low" name="currentR_low" data-currentRlow= "absent"
+                id="edit-node-modal-currentR_low" value="undefined">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high" data-currentRhigh= "absent"
+                id="edit-node-modal-currentR_high" >
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentY-cb-edit">
+            <label class="custom-control-label" for="currentY-cb-edit">current(Y)</label>
+          </div>
+
+          <div class="row mt-4 currentY-box-edit d-none">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="currentY low" name="currentY_low" data-currentYlow= "absent"
+                id="edit-node-modal-currentY_low" value="undefined">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high" data-currentYhigh= "absent"
+                id="edit-node-modal-currentY_high" >
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentB-cb-edit">
+            <label class="custom-control-label" for="currentB-cb-edit">current(B)</label>
+          </div>
+
+          <div class="row mt-4 currentB-box-edit d-none">
+            <div class="col">
+              <input type="text" class="form-control" placeholder="currentB low" name="currentB_low" data-currentBlow= "absent"
+                id="edit-node-modal-currentB_low" value="undefined">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="current high" name="current_high" data-currentBhigh= "absent"
+                id="edit-node-modal-currentB_high" >
+            </div>
+          </div>
+{% comment %} ==================================================================================== {% endcomment %}
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageR-cb-edit">
+            <label class="custom-control-label" for="voltageR-cb-edit">voltage(R)</label>
+          </div>
+
+          <div class="row mt-4 voltageR-box-edit d-none">
+            <div class="col">
+              <input type="number" step="any" value="undefined" name="voltageR_low" class="form-control" placeholder="voltageR_low" data-voltageRlow= "absent"
+                name="voltageR_low" id="edit-node-modal-voltageR_low">
+            </div>
+            <div class="col">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageR_high" name="voltageR_high" data-voltageRhigh= "absent"
+                id="edit-node-modal-voltageR_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageY-cb-edit">
+            <label class="custom-control-label" for="voltageY-cb-edit">voltage(Y)</label>
+          </div>
+
+          <div class="row mt-4 voltageY-box-edit d-none">
+            <div class="col">
+              <input type="number" step="any" value="undefined" name="voltageY_low" class="form-control" placeholder="voltageY_low" data-voltageYlow= "absent"
+                name="voltageY_low" id="edit-node-modal-voltageY_low">
+            </div>
+            <div class="col">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageY_high" name="voltageY_high" data-voltageYhigh= "absent"
+                id="edit-node-modal-voltageY_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageB-cb-edit">
+            <label class="custom-control-label" for="voltageB-cb-edit">voltage(B)</label>
+          </div>
+
+          <div class="row mt-4 voltageB-box-edit d-none">
+            <div class="col">
+              <input type="number" step="any" value="undefined" name="voltageB_low" class="form-control" placeholder="voltageB_low" data-voltageBlow= "absent"
+                name="voltageB_low" id="edit-node-modal-voltageB_low">
+            </div>
+            <div class="col">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageB_high" name="voltageB_high" data-voltageBhigh= "absent"
+                id="edit-node-modal-voltageB_high">
+            </div>
+          </div>
+{% comment %} =================================================== {% endcomment %}
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="generator_speed-cb-edit" >
+            <label class="custom-control-label" for="generator_speed-cb-edit">generator speed</label>
+          </div>
+
+          <div class="row mt-4 d-none generator_speed-box-edit ">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low" data-generatorspeedlow= "absent"
+                name="generator_speed_low" id="edit-node-modal-generator_speed_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"  data-generatorspeedhigh= "absent"
+                name="generator_speed_high" id="edit-node-modal-generator_speed_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" name="" id="windspeed-cb-edit">
+            <label class="custom-control-label" for="windspeed-cb-edit">windspeed</label>
+          </div>
+
+          <div class="row mt-4 d-none windspeed-box-edit">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_low" data-windspeedlow= "absent"
+                name="windspeed_low" id="edit-node-modal-windspeed_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_high" data-windspeedhigh= "absent"
+                name="windspeed_high" id="edit-node-modal-windspeed_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="power-cb-edit">
+            <label class="custom-control-label" for="power-cb-edit">Power</label>
+          </div>
+
+          <div class="row mt-4 d-none power-box-edit">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="Power low" id="edit-node-modal-power_low" data-powerlow= "absent"
+                name="power_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="Power high" id="edit-node-modal-power_high" data-powerhigh= "absent"
+                name="power_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="torque-cb-edit">
+            <label class="custom-control-label" for="torque-cb-edit">torque</label>
+          </div>
+
+          <div class="row mt-4 d-none torque-box-edit">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="torque low" id="edit-node-modal-torque_low" data-torquelow= "absent"
+                name="torque_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="torque high" id="edit-node-modal-torque_high" data-torquehigh= "absent"
+                name="torque_high">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_node">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary save-btn" id="">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  edit user node end -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="changes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Saved !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Changes Saved Successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% for group in user.groups.all %}
+  {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
+  <div class="modal fade" id="user-list-noti-modal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel-deleted-node" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel-deleted-node">Select new user for node xyz</h5>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <form class="col-md-10 mb-5">
+                {% comment %} <label>Select</label> {% endcomment %}
+                <select class="form-control" id="user-list-dropdown">
+                  {% for user in users %}
+                  <option class="user-fn-ln" id="{{user.username}}">{{user.username}}</option>
+                  {% endfor %}
+                </select>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="row">
+            <button type="button" class="col-5 btn btn-primary mx-2 save-user-node" data-dismiss="modal"
+              id="">Save</button>
+            <button type="button" class="col-5 btn btn-secondary " data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+
+
+  <div class="modal fade" id="add_node_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Saved !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Node Added Successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="user_create" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Saved !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          User Created Successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="fields" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Saved !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Please Select All Fields!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="user_delete_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Successfull !</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          User Deleted Successfully!
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="stats_error" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Error</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The Selected range does not have sufficient data to perform mathematical operations. Please see "Print Table"
+          option to verify.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="password_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Enter Password</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-content">
+          <div class="modal-body">
+            {% comment %} <form class="d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+              {% endcomment %}
+              <div class="input-group">
+                <input type="password" class="form-control bg-light border-0 small" placeholder="Enter Password"
+                  aria-label="Search" aria-describedby="basic-addon2" id="password" />
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key"
+                      viewBox="0 0 16 16">
+                      <path
+                        d="M0 8a4 4 0 0 1 7.465-2H14a.5.5 0 0 1 .354.146l1.5 1.5a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0L13 9.207l-.646.647a.5.5 0 0 1-.708 0L11 9.207l-.646.647a.5.5 0 0 1-.708 0L9 9.207l-.646.647A.5.5 0 0 1 8 10h-.535A4 4 0 0 1 0 8zm4-3a3 3 0 1 0 2.712 4.285A.5.5 0 0 1 7.163 9h.63l.853-.854a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.646-.647a.5.5 0 0 1 .708 0l.646.647.793-.793-1-1h-6.63a.5.5 0 0 1-.451-.285A3 3 0 0 0 4 5z" />
+                      <path d="M4 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              {% comment %}
+            </form> {% endcomment %}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="pass-btn" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Close Button -->
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Your div content goes here -->
+          <div id="yourDiv" style="width: 100%; height: 100%; background-color: transparent;">
+            <!-- Content of your div -->
+
+            <div class="card shadow mb-4 class-2 d-none">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Insights</h6>
+              </div>
+              <div class="card-body">
+                <p>Your Node Went Faulty for <a id="insights_week">____</a> Time(s) In This Week</p>
+                <hr>
+                <p>Your Node Went Faulty for <a id="insights_month">____</a> Time(s) In Last 30 Days</p>
+                <hr>
+                <p>Your Node Went Faulty for <a id="insights_time">____</a> Time(s) between
+                <div id="node_date"></div>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade" id="user_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="UID">First Name</label>
+            <input type="text" class="form-control" id="user_fname" placeholder="" />
+          </div>
+          <div class="form-group">
+            <label for="UID">Last Name</label>
+            <input type="text" class="form-control" id="user_lname" placeholder="" />
+          </div>
+          <div class="form-group">
+            <label for="UID">User Name</label>
+            <input type="text" class="form-control" id="user_uname" placeholder="" />
+          </div>
+          <div class="form-group">
+            <label for="location">Password</label>
+            <input type="text" class="form-control" id="user_pass" placeholder="" />
+          </div>
+          <div class="form-group">
+            <label for="location">Select User’s Role :</label>
+          </div>
+          <div class="form-group">
+            {% for group in user.groups.all %}
+            {% if group.name == 'administrator'%}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="roles" id="inlineRadio1" value="administrator">
+              <label class="form-check-label" for="inlineRadio1">administrator</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="roles" id="inlineRadio2" value="admin">
+              <label class="form-check-label" for="inlineRadio2">Admin</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="roles" id="inlineRadio3" value="observer">
+              <label class="form-check-label" for="inlineRadio3">observer</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="roles" id="inlineRadio4" value="user">
+              <label class="form-check-label" for="inlineRadio3">User</label>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_node2">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary" id="create_user_button">
+            Add User
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  {% comment %}
+  <script src="{% static 'adminfile.js' %}"></script> {% endcomment %}
+  <!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins -->
+  <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts -->
+  {% comment %}
+  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script> {% endcomment %}
+
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM="
+    crossorigin="anonymous"></script>
+
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.3/jspdf.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+  {% include "adminfile3.html" %}
+
+</body>
+
+</html>
