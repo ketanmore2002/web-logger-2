@@ -52,6 +52,7 @@ urlpatterns = [
     path("check_deleted_nodes/",views.check_deleted_nodes.as_view(),name='check_deleted_nodes'),
     path("task_data/",views.task_data.as_view(),name='task_data'),
 
+    path("server/",views.server,name='server'),
 
 ]
 
