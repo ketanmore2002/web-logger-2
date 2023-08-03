@@ -318,34 +318,32 @@
         </nav>
 
         {% comment %} <div class="container-fluid"> {% endcomment %}
-          <div class="row ml-2" id="appender">
+          <div class="row ml-3 mb-4" id="appender">
             {% for i in data %}
             <div
               class="position-relative card d-flex flex-column justify-content-between border-0 backgroundImage overflow-hidden "
-              id="delete_node{{i.id}}" style="width: 380px; border-radius: 20px 20px 20px 20px;">
+              id="delete_node{{i.id}}" style="width: 330px; border-radius: 20px 20px 20px 20px;">
 
-              <div class="row border-bottom border-secondary mt-3 mb-1">
+              <div class="row border-bottom border-secondary mt-3">
 
-                <div class="col-6 d-flex flex-column textColor pb-1 mx-4 " style="z-index: 10;">
-                  <h4 class="font-weight-bold mb-1">UID : <a class="textColor UID{{i.id}}"> {{i.uuid}} </a></h4>
-
-                  <h6 class="textColor roboto" style="font-weight: 600;"> {{i.user_name}}
-                  </h6>
+                <div class="col-6 d-flex flex-column textColor pb-1 mx-3" style="z-index: 10;">
+                  <h5 class="font-weight-bold mb-1">UID : <a class="textColor UID{{i.id}}"> {{i.uuid}} </a></h5>
+                  <h6 class="textColor roboto" style="font-weight: 600;"> {{i.user_name}}</h6>
                 </div>
 
-                <div class="col-4 textColor ">
-                  <h3 class="justify-content-end" style="font-weight: 500; font-size: 25px">
-                    <a class="text-success" id="faulty{{i.uuid}}"></a>
-                    
+                <div class="col-4 textColor d-flex flex-column align-items-center justify-content-end">
+                  <div class="d-flex align-items-center justify-content-between" style="gap: 10px;">
+                    <h6 class="" style="font-weight: 900; font-size: 20px">
+                      <a class="w-25 text-success" id="faulty{{i.uuid}}"></a>
+                    </h6>
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                      class="bi bi-battery-full" viewBox="0 0 16 16">
-                      <path d="M2 6h10v4H2V6z" />
-                      <path
-                        d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h10zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z" />
+                        class="bi bi-battery-full" viewBox="0 0 16 16">
+                        <path d="M2 6h10v4H2V6z" />
+                        <path
+                          d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h10zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z" />
                     </svg>
-                  </h3>
-                  <pre class="justify-content-end textColor"
-                    style="font-weight: 600; font-size: 13px ;">           <a id="battery-{{i.uuid}}">{{i.battery}}</a>%</pre>
+                  </div>
+                  <span class="d-block align-self-end"><h6 class="d-inline-block font-weight-bolder" id="battery-{{i.uuid}}">{{i.battery}}</h6>%</span>
                 </div>
               </div>
 
@@ -356,9 +354,9 @@
                   {% if i.uuid == k.uuid %}
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
-                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Voltage (R) </span>                 
-                        <span class="d-block w-25 voltageR-{{k.uuid}} text-success" ><a  id="voltageR-{{k.uuid}}">{{k.voltage}}</a > V</span> 
+                      <div class="w-100 text-white font-weight-bolder roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Voltage (R) </span>                 
+                        <span class="d-block w-25 voltageR-{{k.uuid}} text-success font-weight-bold" style="font-size: 1.1rem;"><a  id="voltageR-{{k.uuid}}">{{k.voltage}}</a > V</span> 
                       </div>
                     </div>
                   </div>
@@ -370,7 +368,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Voltage (Y)</span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Voltage (Y)</span> 
                         <span class="d-block w-25 voltageY-{{k.uuid}} text-success"><a id="voltageY-{{k.uuid}}" ></a> V</span>               
                       </div>
                     </div>
@@ -383,7 +381,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Voltage (B)</span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Voltage (B)</span> 
                         <span class="d-block w-25 voltageB-{{k.uuid}} text-success"><a id="voltageB-{{k.uuid}}" ></a> V</span>               
                       </div>
                     </div>
@@ -399,7 +397,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Current (R)</span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Current (R)</span> 
                         <span class="d-block w-25 currentR-{{k.uuid}} text-success"><a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</span>               
                       </div>
                     </div>
@@ -412,7 +410,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Current (Y) </span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Current (Y) </span> 
                         <span class="d-block w-25 currentY-{{k.uuid}} text-success"><a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</span>               
                       </div>
                     </div>
@@ -425,7 +423,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Current (B) </span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Current (B) </span> 
                         <span class="d-block w-25 currentB-{{k.uuid}} text-success"><a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</span>               
                       </div>
                     </div>
@@ -440,7 +438,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Power </span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Power </span> 
                         <span class="d-block w-25 power-{{k.uuid}} text-success"><a id="power-{{k.uuid}}" > {{k.power}} </a> W</span>               
                       </div>
                     </div>
@@ -453,7 +451,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Generator Speed </span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Generator Speed </span> 
                         <span class="d-block w-25 generator_speed-{{k.uuid}} text-success"><a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</span>               
                       </div>
                     </div>
@@ -466,7 +464,7 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">Wind Speed </span> 
+                        <span class="d-block w-75" style="font-size: 1.1rem;">Wind Speed </span> 
                         <span class="d-block w-25 windspeed-{{k.uuid}} text-success"><a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</span>               
                       </div>
                     </div>
@@ -479,8 +477,8 @@
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
                       <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
-                        <span class="d-block w-75">torque </span> 
-                        <span class="d-block w-25 torque-{{k.uuid}} text-success"><a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</span>               
+                        <span class="d-block w-75" style="font-size: 1.1rem;">torque </span> 
+                        <span class="d-block w-25 torque-{{k.uuid}} text-success"><a id="torque-{{k.uuid}}" > {{k.torque}} </a> NPM</span>               
                       </div>
                     </div>
                   </div>
@@ -495,21 +493,20 @@
                 </div> {% endcomment %}
               </div>
 
-              <div class="flex-grow-0 d-flex flex-column px-4 py-1 mx-4 mb-3 border border-dark" style="border-radius: 12px;">
-
+              <div class="flex-grow-0 d-flex flex-column p-2 mx-3 mb-3 border border-dark" style="border-radius: 12px;">
                 <div class="mb-1 d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Location:</span>
+                  <span class="mr-2 text-white font-weight-bold roboto" style="font-size: 1.1rem;">Location:</span>
                   <h6 class="font-weight-bold mb-0 text-white">{{i.location}}</h6>
                 </div>
 
                 <div class=" d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Sub Location:</span>
+                  <span class="mr-2 text-white font-weight-bold roboto" style="font-size: 1.1rem;">Sub Location:</span>
                   <h6 class="font-weight-bold mb-0 text-white"><a class="textColor sub_location{{i.id}}">
                       {{i.sub_location}}</a></h6>
                 </div>
 
                 <div class="mb-1 d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Machine :</span>
+                  <span class="mr-2 text-white font-weight-bold roboto" style="font-size: 1.1rem;">Machine :</span>
                   <h6 class="font-weight-bold mb-0 text-white"><a class="textColor machine{{i.id}}"> {{i.machine}} </a>
                   </h6>
                 </div>
@@ -517,7 +514,7 @@
                 {% for group in user.groups.all %}
                 {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
 
-                <div class="row">
+                <div class="row d-flex align-items-center justify-content-between">
                   <div class="col-5 w-100 d-flex align-items-center justify-content-between mt-2"
                     style="border-radius: 8px;">
                     <button class="w-100 text-center px-4 py-1 text-white border-0 bg-primary font-weight-bold edit"
@@ -541,7 +538,7 @@
 
 
                 <div class="m-2 d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Last Updated :</span>
+                  <span class="mr-2 text-white font-weight-bold roboto" style="font-size: 1.1rem;">Last Updated :</span>
                   <h6 class="font-weight-bold mb-0 text-white" id="time{{i.uuid}}"></h6>
                 </div>
               </div>

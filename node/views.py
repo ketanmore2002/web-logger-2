@@ -1226,7 +1226,7 @@ def create_node(request):
                         torque_temp.objects.create(uuid = dict_data["uuid"] , torque = dict_data["torque"])
                         if float(dict_data["torque"]) < float(torque_para.torque_low ) or float(dict_data["torque"]) > float(torque_para.torque_high ) :
                             status = "unhealthy"
-                            parameters = parameters + "torque"
+                            parameters = parameters + "torque "
                     else:
                         pass
                 except:

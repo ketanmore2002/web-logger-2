@@ -32,6 +32,8 @@ admin.site.register(voltageR_parameters)
 
 admin.site.register(time_stamp)
 
+admin.site.register(node_health)
+
 
 @admin.register(voltageR_model)
 class PersonAdmin(ImportExportModelAdmin):

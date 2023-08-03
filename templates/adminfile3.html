@@ -941,11 +941,22 @@
             $("#faulty" + result[i]["fields"]["uuid"]).removeClass("text-success");
             $("#faulty" + result[i]["fields"]["uuid"]).addClass("text-danger");
 
+            //$("." + result[i]["fields"]["parameter"].slice(0, -1) + "-" + result[i]["fields"]["uuid"]).removeClass("text-success");
+            //$("." + result[i]["fields"]["parameter"].slice(0, -1) + "-" + result[i]["fields"]["uuid"]).addClass("text-danger");
             
-            $(String((("."+result[i]["fields"]["paramater"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"])).removeClass("text-success");
-            $(String((("."+result[i]["fields"]["paramater"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"])).addClass("text-danger");
+            const str = (result[i]["fields"]["parameter"]).slice(0, -1);
+            const array = str.split(' ');
             
-            console.log(String((("."+result[i]["fields"]["parameter"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"]));
+            for (let j = 0; j < array.length; j++) {
+            $("." + array[j] + "-" + result[i]["fields"]["uuid"]).removeClass("text-success");
+            $("." + array[j] + "-" + result[i]["fields"]["uuid"]).addClass("text-danger");
+            //console.log(array[j])
+            }
+            
+          }
+          else{
+            $(".w-25").removeClass("text-danger");
+            $(".w-25").addClass("text-success");
           };
         };
       }
