@@ -1082,7 +1082,7 @@ def create_node(request):
 
                 rc, mid = client.publish('django/mqtt', str(dict_data))
 
-
+                parameters = ""
                 status = "healthy"
                 try :
                     if voltageR_parameters.objects.filter(uuid = dict_data["uuid"]).exists() :
@@ -1092,6 +1092,7 @@ def create_node(request):
                         voltageR_temp.objects.create(uuid = dict_data["uuid"] , voltageR = dict_data["voltageR"])
                         if float(dict_data["voltageR"]) < float(voltageR_para.voltageR_low ) or float(dict_data["voltageR"]) > float(voltageR_para.voltageR_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "voltageR "
                     else:
                         pass
                 except:
@@ -1105,6 +1106,7 @@ def create_node(request):
                         voltageY_temp.objects.create(uuid = dict_data["uuid"] , voltageY = dict_data["voltageY"])
                         if float(dict_data["voltageY"]) < float(voltageY_para.voltageY_low ) or float(dict_data["voltageY"]) > float(voltageY_para.voltageY_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "voltageY "
                     else:
                         pass
                 except:
@@ -1118,6 +1120,7 @@ def create_node(request):
                         voltageB_temp.objects.create(uuid = dict_data["uuid"] , voltageB = dict_data["voltageB"])
                         if float(dict_data["voltageB"]) < float(voltageB_para.voltageB_low ) or float(dict_data["voltageB"]) > float(voltageB_para.voltageB_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "voltageB "
                     else:
                         pass
 
@@ -1134,6 +1137,8 @@ def create_node(request):
                         currentR_temp.objects.create(uuid = dict_data["uuid"] , currentR = dict_data["currentR"])
                         if float(dict_data["currentR"]) < float(currentR_para.currentR_low ) or float(dict_data["currentR"]) > float(currentR_para.currentR_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "currentR "
+
                     else:
                         pass
                 except:
@@ -1148,6 +1153,7 @@ def create_node(request):
                         currentY_temp.objects.create(uuid = dict_data["uuid"] , currentY = dict_data["currentY"])
                         if float(dict_data["currentY"]) < float(currentY_para.currentY_low ) or float(dict_data["currentY"]) > float(currentY_para.currentY_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "currentY "
                     else:
                         pass
                 except:
@@ -1161,6 +1167,7 @@ def create_node(request):
                         currentB_temp.objects.create(uuid = dict_data["uuid"] , currentB = dict_data["currentB"])
                         if float(dict_data["currentB"]) < float(currentB_para.currentB_low ) or float(dict_data["currentB"]) > float(currentB_para.currentB_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "currentB "
                     else:
                         pass
                 except:
@@ -1175,6 +1182,7 @@ def create_node(request):
                         power_temp.objects.create(uuid = dict_data["uuid"] , power = dict_data["power"])
                         if float(dict_data["power"]) < float(power_para.power_low ) or float(dict_data["power"]) > float(power_para.power_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "power "
                     else:
                         pass
                 except:
@@ -1189,6 +1197,7 @@ def create_node(request):
                         generator_speed_temp.objects.create(uuid = dict_data["uuid"] , generator_speed = dict_data["generator_speed"] )
                         if float(dict_data["generator_speed"]) < float(generator_speed_para.generator_speed_low ) or float(dict_data["generator_speed"]) > float(generator_speed_para.generator_speed_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "generator_speed "
                     else :
                         pass
                 except:
@@ -1203,6 +1212,7 @@ def create_node(request):
                         windspeed_temp.objects.create(uuid = dict_data["uuid"] , windspeed = dict_data["windspeed"])
                         if float(dict_data["windspeed"]) < float(windspeed_para.windspeed_low ) or float(dict_data["windspeed"]) > float(windspeed_para.windspeed_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "windspeed "
                     else:
                         pass
                 except:
@@ -1216,6 +1226,7 @@ def create_node(request):
                         torque_temp.objects.create(uuid = dict_data["uuid"] , torque = dict_data["torque"])
                         if float(dict_data["torque"]) < float(torque_para.torque_low ) or float(dict_data["torque"]) > float(torque_para.torque_high ) :
                             status = "unhealthy"
+                            parameters = parameters + "torque"
                     else:
                         pass
                 except:
@@ -1229,7 +1240,7 @@ def create_node(request):
 
                 if status == "unhealthy" :
                     node_health.objects.filter(uuid = dict_data["uuid"]).delete()
-                    node_health.objects.create(uuid = dict_data["uuid"] , health = "Unhealthy")
+                    node_health.objects.create(uuid = dict_data["uuid"] , health = "Unhealthy" , parameter = parameters)
                     info = nodes_model.objects.filter(_uuid = dict_data["uuid"])[0]
                     subject = 'Unhealthy Node'
                     message = 'Hi ' + info.user_name +","+dict_data["uuid"]+ ' is unhealthy please check it '

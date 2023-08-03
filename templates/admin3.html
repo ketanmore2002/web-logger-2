@@ -25,6 +25,11 @@
   <!-- Custom styles for this template-->
   <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet" />
   <style>
+
+    body {
+      font-weight: bold;
+    }
+    
     .backgroundColor {
       background: linear-gradient(90deg, #414850, #131720);
     }
@@ -76,9 +81,8 @@
     .backgroundImage {
       background-color: #010926;
       background-image: url("{% static 'card5.svg' %}");
-      /* background-attachment: fixed;
-      background-size: cover; */
-      /* background-position-y: -80px; */
+      background-size: cover;
+      background-repeat: no-repeat;
     }
 
     * {
@@ -88,6 +92,14 @@
     .dropdown-menu {
       width: 400px !important;
       min-height: 100px !important;
+    }
+
+    .btn-primary {
+      background-color: #0066ff
+    }
+
+    button {
+      background-color: #0066ff
     }
 
     @media print {
@@ -205,7 +217,7 @@
 
           <!-- Topbar Search -->
           <ul class="mt-2 justify-content-start text-dark">
-            <h2>Breeze Power Mill Data Logger</h2>
+            <h2>Breeze Power Mill Data Logger (AC)</h2>
             <!-- Dropdown - User Information -->
           </ul>
 
@@ -312,7 +324,7 @@
               class="position-relative card d-flex flex-column justify-content-between border-0 backgroundImage overflow-hidden "
               id="delete_node{{i.id}}" style="width: 380px; border-radius: 20px 20px 20px 20px;">
 
-              <div class="row border-bottom border-secondary mt-1 mb-1">
+              <div class="row border-bottom border-secondary mt-3 mb-1">
 
                 <div class="col-6 d-flex flex-column textColor pb-1 mx-4 " style="z-index: 10;">
                   <h4 class="font-weight-bold mb-1">UID : <a class="textColor UID{{i.id}}"> {{i.uuid}} </a></h4>
@@ -323,7 +335,8 @@
 
                 <div class="col-4 textColor ">
                   <h3 class="justify-content-end" style="font-weight: 500; font-size: 25px">
-                    <a id="faulty{{i.uuid}}"></a>
+                    <a class="text-success" id="faulty{{i.uuid}}"></a>
+                    
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
                       class="bi bi-battery-full" viewBox="0 0 16 16">
                       <path d="M2 6h10v4H2V6z" />
@@ -336,15 +349,17 @@
                 </div>
               </div>
 
-              <div class="flex-grow-1 d-flex flex-column textColor mx-4 " style="z-index: 10;">
+              <div class="flex-grow-1 d-flex flex-column textColor mx-4 my-2" style="z-index: 10;">
 
-                <div class="textColor border-bottom border-secondary">
+                <div class="textColor border-bottom border-secondary px-4 pb-2">
                   {% for k in voltageR_para %}
                   {% if i.uuid == k.uuid %}
                   <div class="row">
                     <div class="w-100 d-flex align-items-center justify-content-between">
-                      <pre class="textColor font-weight-bold roboto"
-                        style="font-size: 15px;">  Voltage (R)                <a id="voltageR-{{k.uuid}}" >{{k.voltage}}</a> V</pre>
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Voltage (R) </span>                 
+                        <span class="d-block w-25 voltageR-{{k.uuid}} text-success" ><a  id="voltageR-{{k.uuid}}">{{k.voltage}}</a > V</span> 
+                      </div>
                     </div>
                   </div>
                   {% endif %}
@@ -352,88 +367,126 @@
 
                   {% for k in voltageY_para %}
                   {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between">
-                    <pre class="textColor font-weight-bold roboto"
-                      style="font-size: 15px;"> Voltage (Y)                <a id="voltageY-{{k.uuid}}" ></a> V</pre>
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Voltage (Y)</span> 
+                        <span class="d-block w-25 voltageY-{{k.uuid}} text-success"><a id="voltageY-{{k.uuid}}" ></a> V</span>               
+                      </div>
+                    </div>
                   </div>
                   {% endif %}
                   {% endfor %}
 
                   {% for k in voltageB_para %}
                   {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto"
-                      style="font-size: 15px;"> Voltage (B)                <a id="voltageB-{{k.uuid}}" ></a> V</pre>
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Voltage (B)</span> 
+                        <span class="d-block w-25 voltageB-{{k.uuid}} text-success"><a id="voltageB-{{k.uuid}}" ></a> V</span>               
+                      </div>
+                    </div>
                   </div>
                   {% endif %}
                   {% endfor %}
                 </div>
+                
 
-                <div class="textColor border-bottom border-secondary">
+                <div class="textColor border-bottom border-secondary px-4 py-2">
                   {% for k in currentR_para %}
                   {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto"
-                      style="font-size: 15px;"> Current (R)                <a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Current (R)</span> 
+                        <span class="d-block w-25 currentR-{{k.uuid}} text-success"><a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</span>               
+                      </div>
+                    </div>
                   </div>
                   {% endif %}
                   {% endfor %}
 
                   {% for k in currentY_para %}
                   {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto"
-                      style="font-size: 15px;"> Current (Y)                <a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Current (Y) </span> 
+                        <span class="d-block w-25 currentY-{{k.uuid}} text-success"><a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</span>               
+                      </div>
+                    </div>
                   </div>
                   {% endif %}
                   {% endfor %}
 
                   {% for k in currentB_para %}
                   {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto"
-                      style="font-size: 15px;"> Current (B)                <a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Current (B) </span> 
+                        <span class="d-block w-25 currentB-{{k.uuid}} text-success"><a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</span>               
+                      </div>
+                    </div>
                   </div>
                   {% endif %}
                   {% endfor %}
                 </div>
 
+                <div class="textColor px-4 py-2">
+                  {% for k in power_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Power </span> 
+                        <span class="d-block w-25 power-{{k.uuid}} text-success"><a id="power-{{k.uuid}}" > {{k.power}} </a> W</span>               
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
 
-                {% for k in power_para %}
-                {% if i.uuid == k.uuid %}
-                <div class="w-100 d-flex align-items-center justify-content-between ">
-                  <pre class="textColor font-weight-bold roboto"
-                    style="font-size: 15px;"> Power                      <a id="power-{{k.uuid}}" > {{k.power}} </a> W</pre>
-                </div>
-                {% endif %}
-                {% endfor %}
+                  {% for k in generator_speed_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Generator Speed </span> 
+                        <span class="d-block w-25 generator_speed-{{k.uuid}} text-success"><a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</span>               
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
 
-                {% for k in generator_speed_para %}
-                {% if i.uuid == k.uuid %}
-                <div class="w-100 d-flex align-items-center justify-content-between ">
-                  <pre class="textColor font-weight-bold roboto"
-                    style="font-size: 15px;"> Generator Speed            <a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</pre>
-                </div>
-                {% endif %}
-                {% endfor %}
+                  {% for k in windspeed_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">Wind Speed </span> 
+                        <span class="d-block w-25 windspeed-{{k.uuid}} text-success"><a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</span>               
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
 
-                {% for k in windspeed_para %}
-                {% if i.uuid == k.uuid %}
-                <div class="w-100 d-flex align-items-center justify-content-between ">
-                  <pre class="textColor font-weight-bold roboto"
-                    style="font-size: 15px;"> WindSpeed                  <a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</pre>
+                  {% for k in torque_para %}
+                  {% if i.uuid == k.uuid %}
+                  <div class="row">
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <div class="w-100 text-white font-weight-bold roboto d-flex align-items-center justify-content-between" style="font-size: 15px;">
+                        <span class="d-block w-75">torque </span> 
+                        <span class="d-block w-25 torque-{{k.uuid}} text-success"><a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</span>               
+                      </div>
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% endfor %}
                 </div>
-                {% endif %}
-                {% endfor %}
-
-                {% for k in torque_para %}
-                {% if i.uuid == k.uuid %}
-                <div class="w-100 d-flex align-items-center justify-content-between ">
-                  <pre class="textColor font-weight-bold roboto"
-                    style="font-size: 15px;"> torque                     <a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</pre>
-                </div>
-                {% endif %}
-                {% endfor %}
 
 
                 {% comment %} <div class="w-100 d-flex align-items-center justify-content-between ">
@@ -442,8 +495,7 @@
                 </div> {% endcomment %}
               </div>
 
-              <div class="flex-grow-0 d-flex flex-column px-4 py-1 mx-4 border border-dark"
-                style="border-radius: 12px;">
+              <div class="flex-grow-0 d-flex flex-column px-4 py-1 mx-4 mb-3 border border-dark" style="border-radius: 12px;">
 
                 <div class="mb-1 d-flex align-items-center justify-content-between">
                   <span class="mr-2 text-white font-weight-bold roboto">Location:</span>
@@ -466,7 +518,7 @@
                 {% if group.name == 'administrator' or group.name == 'admin' or group.name == 'user'%}
 
                 <div class="row">
-                  <div class="col-6 w-100 d-flex align-items-center justify-content-between mt-2"
+                  <div class="col-5 w-100 d-flex align-items-center justify-content-between mt-2"
                     style="border-radius: 8px;">
                     <button class="w-100 text-center px-4 py-1 text-white border-0 bg-primary font-weight-bold edit"
                       id="{{i.uuid}}" style="border-radius: 8px; background-color: #fc5296;
@@ -475,7 +527,7 @@
                     </button>
                   </div>
 
-                  <div class=" col-6 w-100 d-flex align-items-center justify-content-between mt-2"
+                  <div class=" col-5 w-100 d-flex align-items-center justify-content-between mt-2"
                     style="border-radius: 8px;">
                     <button class="w-100 text-center px-4 py-1 text-white border-0 bg-primary font-weight-bold lala"
                       id="{{i.id}}" style="border-radius: 8px; background-color: #fc5296;

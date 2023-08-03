@@ -933,8 +933,20 @@
       success: function (result) {
         //console.log(result)  
         for (let i = 0; i < result.length; i++) {
-          //console.log(result[i]["fields"]["uuid"]);
+          //console.log(result[i]["fields"]);
           $("#faulty" + result[i]["fields"]["uuid"]).text(result[i]["fields"]["health"])
+
+          if ((result[i]["fields"]["health"]) == "Unhealthy") {
+            //console.log(result[i]["fields"]["health"]);
+            $("#faulty" + result[i]["fields"]["uuid"]).removeClass("text-success");
+            $("#faulty" + result[i]["fields"]["uuid"]).addClass("text-danger");
+
+            
+            $(String((("."+result[i]["fields"]["paramater"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"])).removeClass("text-success");
+            $(String((("."+result[i]["fields"]["paramater"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"])).addClass("text-danger");
+            
+            console.log(String((("."+result[i]["fields"]["parameter"]).slice(0, -1))+"-"+result[i]["fields"]["uuid"]));
+          };
         };
       }
     });
