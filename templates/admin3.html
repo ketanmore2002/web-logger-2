@@ -55,7 +55,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      z-index: 3; /* Higher z-index to keep the button above the blur */
+      z-index: 3;
+      /* Higher z-index to keep the button above the blur */
     }
 
     .center-button {
@@ -68,7 +69,8 @@
     }
 
     .blur-div {
-      filter: blur(5px); /* Apply blur effect to the background image */
+      filter: blur(5px);
+      /* Apply blur effect to the background image */
     }
 
     .backgroundImage {
@@ -92,7 +94,7 @@
       body * {
         visibility: hidden;
       }
-      
+
       #canvas_div_pdf,
       #canvas_div_pdf * {
         visibility: visible;
@@ -110,13 +112,11 @@
         margin: 0.2cm;
       }
 
-      #accordionSidebar{
+      #accordionSidebar {
         display: none;
       }
 
     }
-
-    
   </style>
 
 </head>
@@ -125,7 +125,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #0066ff;">
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center" href="">
         <div class="sidebar-brand-text mx-1">{{request.user.username}} </div>
@@ -242,12 +242,12 @@
                     <div class="toast-body">
                       Please Take a action :
                     </div>
-                      <div class="row toast-body">
-                        <button type="button" class="btn btn-primary col-4 mx-2 noti-center" id="{{notification.node_id}}"
-                          data-node-name="{{notification.uuid}}">Change User</button>
-                        <button type="button" class="btn btn-danger col-4 mx-1 noti-delete" id="{{notification.node_id}}"
-                          data-node-name="{{notification.uuid}}">Delete Node</button>
-                      </div>
+                    <div class="row toast-body">
+                      <button type="button" class="btn btn-primary col-4 mx-2 noti-center" id="{{notification.node_id}}"
+                        data-node-name="{{notification.uuid}}">Change User</button>
+                      <button type="button" class="btn btn-danger col-4 mx-1 noti-delete" id="{{notification.node_id}}"
+                        data-node-name="{{notification.uuid}}">Delete Node</button>
+                    </div>
                   </div>
                 </a>
                 {% endfor %}
@@ -305,36 +305,46 @@
           </ul>
         </nav>
 
-        <div class="container-fluid">
-          <div class="row" id="appender">
+        {% comment %} <div class="container-fluid"> {% endcomment %}
+          <div class="row ml-2" id="appender">
             {% for i in data %}
             <div
-            class="position-relative card d-flex flex-column justify-content-between border-0 py-2 backgroundImage overflow-hidden "
-            id="delete_node{{i.id}}" style="width: 380px; border-radius: 20px 20px 20px 20px;">
+              class="position-relative card d-flex flex-column justify-content-between border-0 backgroundImage overflow-hidden "
+              id="delete_node{{i.id}}" style="width: 380px; border-radius: 20px 20px 20px 20px;">
 
-              <div class="row border-bottom border-secondary mb-1">
+              <div class="row border-bottom border-secondary mt-1 mb-1">
 
-                <div class="col-6 d-flex flex-column textColor pb-2 mx-4 " style="z-index: 10;">
+                <div class="col-6 d-flex flex-column textColor pb-1 mx-4 " style="z-index: 10;">
                   <h4 class="font-weight-bold mb-1">UID : <a class="textColor UID{{i.id}}"> {{i.uuid}} </a></h4>
-                  <h6 class="textColor roboto" style="font-weight: 600;">Location: <a
-                      class="textColor location{{i.id}}">
-                      {{i.location}}</a></h6>
+
+                  <h6 class="textColor roboto" style="font-weight: 600;"> {{i.user_name}}
+                  </h6>
                 </div>
 
-                <div class="col-4 textColor pb-2">
+                <div class="col-4 textColor ">
                   <h3 class="justify-content-end" style="font-weight: 500; font-size: 25px">
                     <a id="faulty{{i.uuid}}"></a>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                      class="bi bi-battery-full" viewBox="0 0 16 16">
+                      <path d="M2 6h10v4H2V6z" />
+                      <path
+                        d="M2 4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H2zm10 1a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h10zm4 3a1.5 1.5 0 0 1-1.5 1.5v-3A1.5 1.5 0 0 1 16 8z" />
+                    </svg>
                   </h3>
+                  <pre class="justify-content-end textColor"
+                    style="font-weight: 600; font-size: 13px ;">           <a id="battery-{{i.uuid}}">{{i.battery}}</a>%</pre>
                 </div>
               </div>
 
-              <div class="flex-grow-1 d-flex flex-column textColor mx-4 px-2 " style="z-index: 10;">
+              <div class="flex-grow-1 d-flex flex-column textColor mx-4 " style="z-index: 10;">
 
+                <div class="textColor border-bottom border-secondary">
                   {% for k in voltageR_para %}
                   {% if i.uuid == k.uuid %}
                   <div class="row">
-                    <div class="w-100 d-flex align-items-center justify-content-between ">
-                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;">  Voltage (R)               <a id="voltageR-{{k.uuid}}" >{{k.voltage}}</a> V</pre>
+                    <div class="w-100 d-flex align-items-center justify-content-between">
+                      <pre class="textColor font-weight-bold roboto"
+                        style="font-size: 15px;">  Voltage (R)                <a id="voltageR-{{k.uuid}}" >{{k.voltage}}</a> V</pre>
                     </div>
                   </div>
                   {% endif %}
@@ -342,25 +352,29 @@
 
                   {% for k in voltageY_para %}
                   {% if i.uuid == k.uuid %}
-                    <div class="w-100 d-flex align-items-center justify-content-between ">
-                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Voltage (Y)               <a id="voltageY-{{k.uuid}}" ></a> V</pre>
-                    </div>
+                  <div class="w-100 d-flex align-items-center justify-content-between">
+                    <pre class="textColor font-weight-bold roboto"
+                      style="font-size: 15px;"> Voltage (Y)                <a id="voltageY-{{k.uuid}}" ></a> V</pre>
+                  </div>
                   {% endif %}
                   {% endfor %}
 
                   {% for k in voltageB_para %}
                   {% if i.uuid == k.uuid %}
-                    <div class="w-100 d-flex align-items-center justify-content-between ">
-                      <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Voltage (B)               <a id="voltageB-{{k.uuid}}" ></a> V</pre>
-                    </div>
+                  <div class="w-100 d-flex align-items-center justify-content-between ">
+                    <pre class="textColor font-weight-bold roboto"
+                      style="font-size: 15px;"> Voltage (B)                <a id="voltageB-{{k.uuid}}" ></a> V</pre>
+                  </div>
                   {% endif %}
                   {% endfor %}
-                  
+                </div>
 
+                <div class="textColor border-bottom border-secondary">
                   {% for k in currentR_para %}
                   {% if i.uuid == k.uuid %}
                   <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (R)               <a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                    <pre class="textColor font-weight-bold roboto"
+                      style="font-size: 15px;"> Current (R)                <a id="currentR-{{k.uuid}}" >{{k.current}}</a> A</pre>
                   </div>
                   {% endif %}
                   {% endfor %}
@@ -368,7 +382,8 @@
                   {% for k in currentY_para %}
                   {% if i.uuid == k.uuid %}
                   <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (Y)               <a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                    <pre class="textColor font-weight-bold roboto"
+                      style="font-size: 15px;"> Current (Y)                <a id="currentY-{{k.uuid}}" >{{k.current}}</a> A</pre>
                   </div>
                   {% endif %}
                   {% endfor %}
@@ -376,68 +391,75 @@
                   {% for k in currentB_para %}
                   {% if i.uuid == k.uuid %}
                   <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Current (B)               <a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</pre>
+                    <pre class="textColor font-weight-bold roboto"
+                      style="font-size: 15px;"> Current (B)                <a id="currentB-{{k.uuid}}" >{{k.current}}</a> A</pre>
                   </div>
                   {% endif %}
                   {% endfor %}
+                </div>
 
 
-                  {% for k in power_para %}
-                  {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Power                     <a id="power-{{k.uuid}}" > {{k.power}} </a> W</pre>
-                  </div>
-                  {% endif %}
-                  {% endfor %}
+                {% for k in power_para %}
+                {% if i.uuid == k.uuid %}
+                <div class="w-100 d-flex align-items-center justify-content-between ">
+                  <pre class="textColor font-weight-bold roboto"
+                    style="font-size: 15px;"> Power                      <a id="power-{{k.uuid}}" > {{k.power}} </a> W</pre>
+                </div>
+                {% endif %}
+                {% endfor %}
 
-                  {% for k in generator_speed_para %}
-                  {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Generator Speed           <a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</pre>
-                  </div>
-                  {% endif %}
-                  {% endfor %}
+                {% for k in generator_speed_para %}
+                {% if i.uuid == k.uuid %}
+                <div class="w-100 d-flex align-items-center justify-content-between ">
+                  <pre class="textColor font-weight-bold roboto"
+                    style="font-size: 15px;"> Generator Speed            <a id="generator_speed-{{k.uuid}}" > {{k.generator_speed}} </a> RPM</pre>
+                </div>
+                {% endif %}
+                {% endfor %}
 
-                  {% for k in windspeed_para %}
-                  {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> WindSpeed                 <a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</pre>                    
-                  </div>
-                  {% endif %}
-                  {% endfor %}
+                {% for k in windspeed_para %}
+                {% if i.uuid == k.uuid %}
+                <div class="w-100 d-flex align-items-center justify-content-between ">
+                  <pre class="textColor font-weight-bold roboto"
+                    style="font-size: 15px;"> WindSpeed                  <a id="windspeed-{{k.uuid}}" > {{k.windspeed}} </a> KMPH</pre>
+                </div>
+                {% endif %}
+                {% endfor %}
 
-                  {% for k in torque_para %}
-                  {% if i.uuid == k.uuid %}
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> torque                    <a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</pre>                    
-                  </div>
-                  {% endif %}
-                  {% endfor %}
+                {% for k in torque_para %}
+                {% if i.uuid == k.uuid %}
+                <div class="w-100 d-flex align-items-center justify-content-between ">
+                  <pre class="textColor font-weight-bold roboto"
+                    style="font-size: 15px;"> torque                     <a id="torque-{{k.uuid}}" > {{k.windspeed}} </a> NPM</pre>
+                </div>
+                {% endif %}
+                {% endfor %}
 
 
-                  <div class="w-100 d-flex align-items-center justify-content-between ">
-                    <pre class="textColor font-weight-bold roboto" style="font-size: 15px;"> Battery                   <a id="battery-{{i.uuid}}">{{i.battery}}</a> %</pre>
-                  </div>
+                {% comment %} <div class="w-100 d-flex align-items-center justify-content-between ">
+                  <pre class="textColor font-weight-bold roboto"
+                    style="font-size: 15px;"> Battery                   <a id="battery-{{i.uuid}}">{{i.battery}}</a> %</pre>
+                </div> {% endcomment %}
               </div>
 
               <div class="flex-grow-0 d-flex flex-column px-4 py-1 mx-4 border border-dark"
                 style="border-radius: 12px;">
 
                 <div class="mb-1 d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Username:</span>
-                  <h6 class="font-weight-bold mb-0 text-white">{{i.user_name}}</h6>
-                </div>
-
-                <div class="mb-1 d-flex align-items-center justify-content-between">
-                  <span class="mr-2 text-white font-weight-bold roboto">Machine :</span>
-                  <h6 class="font-weight-bold mb-0 text-white"><a class="textColor machine{{i.id}}"> {{i.machine}} </a>
-                  </h6>
+                  <span class="mr-2 text-white font-weight-bold roboto">Location:</span>
+                  <h6 class="font-weight-bold mb-0 text-white">{{i.location}}</h6>
                 </div>
 
                 <div class=" d-flex align-items-center justify-content-between">
                   <span class="mr-2 text-white font-weight-bold roboto">Sub Location:</span>
                   <h6 class="font-weight-bold mb-0 text-white"><a class="textColor sub_location{{i.id}}">
                       {{i.sub_location}}</a></h6>
+                </div>
+
+                <div class="mb-1 d-flex align-items-center justify-content-between">
+                  <span class="mr-2 text-white font-weight-bold roboto">Machine :</span>
+                  <h6 class="font-weight-bold mb-0 text-white"><a class="textColor machine{{i.id}}"> {{i.machine}} </a>
+                  </h6>
                 </div>
 
                 {% for group in user.groups.all %}
@@ -476,7 +498,8 @@
           </div>
 
           <!-- Content Row -->
-        </div>
+          {% comment %}
+        </div> {% endcomment %}
         <div class="class-2 d-none">
           <div class="card shadow m-4 filter" id="filter">
             <!-- Card Header - Dropdown -->
@@ -525,21 +548,26 @@
               <div class="card shadow mb-4" id="pdf">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary"><!-- Area Chart -->
-                    <button type="submit" class="btn btn-primary float-right mx-2" id="print_graph_1" onclick="printDiv('canvas_div_pdf')">Print Graph</button>
-                    <a id="print_table" href="#" target="_blank"><button type="submit" class="btn btn-primary float-right mx-2">See Table</button></a>
-                    <button type="button" class="btn btn-primary float-right mx-2" data-toggle="modal" data-target="#myModal">See Insights</button>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left-circle float-left mx-2" viewBox="0 0 16 16" id="back-btn">
-                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"/>
+                    <button type="submit" class="btn btn-primary float-right mx-2" id="print_graph_1"
+                      onclick="printDiv('canvas_div_pdf')">Print Graph</button>
+                    <a id="print_table" href="#" target="_blank"><button type="submit"
+                        class="btn btn-primary float-right mx-2">See Table</button></a>
+                    <button type="button" class="btn btn-primary float-right mx-2" data-toggle="modal"
+                      data-target="#myModal">See Insights</button>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                      class="bi bi-arrow-left-circle float-left mx-2" viewBox="0 0 16 16" id="back-btn">
+                      <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.5-.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z" />
                     </svg>
                   </h6>
                 </div>
                 <div class="card-body canvas_div_pdf" id="canvas_div_pdf">
                   <code class="col-2 mx-2 my-2">Node :</code><a id="node_name"></a>
-                  
+
                   <code class="col-2 mx-2 my-2">Date :</code> <a id="node_date"></a>
-                  
+
                   <code class="col-2 mx-2 my-2">Time :</code> <a id="node_time"></a>
-                  
+
                   <div class="row">
                     <table class="table">
                       <thead>
@@ -683,43 +711,43 @@
                     <td class="{{ i.groups.all.0 }}_{{i.id}}">{{ i.groups.all.0 }}</td>
                     {% if i.groups.all.0.name != 'administrator' %}
                     <td>
-                        <div class=" btn-group">
-                          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                            Roles
-                          </button>
-                          <div class="mask dropdown-menu">
-                            {% for group in user.groups.all %}
-                            {% if group.name == 'administrator'%}
-                            <a class="mask dropdown-item super_admin" id="{{i.id}}">administrator</a>
-                            <a class="mask dropdown-item admin" id="{{i.id}}">admin</a>
-                            {% endif %}
-                            {% endfor %}
-                            <a class="mask dropdown-item observer" id="{{i.id}}">observer</a>
-                            <a class="mask dropdown-item user" id="{{i.id}}">user</a>
-                          </div>
-                        </div>
-                      </td>
-                        {% else %}
-                     <td>NA</td>
-                      {% endif %}
-
-                      {% for group in user.groups.all %}
-                      {% if group.name == 'administrator' %}
-                      {% if i.groups.all.0.name == 'administrator' %}
-                         <td>NA</td>
-                      {% else %}
-                      <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
-                      {% endif %}
-                      {% elif group.name == 'admin' %}
-                          {% if i.groups.all.0.name == 'administrator' or i.groups.all.0.name == 'admin' %}
-                              <td>NA</td>
-                          {% elif i.groups.all.0.name == 'user' or i.groups.all.0.name == 'observer' %}
-                              <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
+                      <div class=" btn-group">
+                        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                          aria-haspopup="true" aria-expanded="false">
+                          Roles
+                        </button>
+                        <div class="mask dropdown-menu">
+                          {% for group in user.groups.all %}
+                          {% if group.name == 'administrator'%}
+                          <a class="mask dropdown-item super_admin" id="{{i.id}}">administrator</a>
+                          <a class="mask dropdown-item admin" id="{{i.id}}">admin</a>
                           {% endif %}
-                      {% endif %}
-                  {% endfor %}
-                  
+                          {% endfor %}
+                          <a class="mask dropdown-item observer" id="{{i.id}}">observer</a>
+                          <a class="mask dropdown-item user" id="{{i.id}}">user</a>
+                        </div>
+                      </div>
+                    </td>
+                    {% else %}
+                    <td>NA</td>
+                    {% endif %}
+
+                    {% for group in user.groups.all %}
+                    {% if group.name == 'administrator' %}
+                    {% if i.groups.all.0.name == 'administrator' %}
+                    <td>NA</td>
+                    {% else %}
+                    <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
+                    {% endif %}
+                    {% elif group.name == 'admin' %}
+                    {% if i.groups.all.0.name == 'administrator' or i.groups.all.0.name == 'admin' %}
+                    <td>NA</td>
+                    {% elif i.groups.all.0.name == 'user' or i.groups.all.0.name == 'observer' %}
+                    <td><button type="button" class="btn btn-danger delete_user" id="{{ i.id }}">Delete</button></td>
+                    {% endif %}
+                    {% endif %}
+                    {% endfor %}
+
 
                   </tr>
                   {% endfor %}
@@ -752,59 +780,82 @@
                 <tbody id="">
                   <tr class="">
                     <td>Voltage(R)</td>
-                    <td><a href="/admin/node/voltager_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/voltager_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/voltager_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltager_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Voltage(Y)</td>
-                    <td><a href="/admin/node/voltagey_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/voltagey_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/voltagey_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltagey_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Voltage(B)</td>
-                    <td><a href="/admin/node/voltageb_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/voltageb_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/voltageb_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/voltageb_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Current(R)</td>
-                    <td><a href="/admin/node/currentr_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/current_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/currentr_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/current_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Current(Y)</td>
-                    <td><a href="/admin/node/currenty_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/currenty_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/currenty_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/currenty_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Current(B)</td>
-                    <td><a href="/admin/node/currentb_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/currentb_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/currentb_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/currentb_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Generator Speed</td>
-                    <td><a href="/admin/node/generator_speed_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/generator_speed_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/generator_speed_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/generator_speed_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Power</td>
-                    <td><a href="/admin/node/power_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/power_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/power_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/power_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>WindSpeed</td>
-                    <td><a href="/admin/node/windspeed_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/windspeed_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/windspeed_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/windspeed_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
                   <tr class="">
                     <td>Torque</td>
-                    <td><a href="/admin/node/torque_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                    <td><a href="/admin/node/torque_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
+                    <td><a href="/admin/node/torque_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/torque_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
                   </tr>
-                </tr><tr class="">
-                  <td>Nodes</td>
-                  <td><a href="/admin/node/nodes_model/export/" target="_blank"><button type="button" class="btn btn-success">Download</button></td></a>
-                  <td><a href="/admin/node/nodes_model/import/" target="_blank"><button type="button" class="btn btn-info">Upload</button></td></a>
-                </tr>
+                  </tr>
+                  <tr class="">
+                    <td>Nodes</td>
+                    <td><a href="/admin/node/nodes_model/export/" target="_blank"><button type="button"
+                          class="btn btn-success">Download</button></td></a>
+                    <td><a href="/admin/node/nodes_model/import/" target="_blank"><button type="button"
+                          class="btn btn-info">Upload</button></td></a>
+                  </tr>
                 </tbody>
 
               </table>
@@ -862,201 +913,199 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-          {% csrf_token %}
-          <div class="modal-body" id="my-checkbox-group">
-            <div class="form-group">
-              <label for="UID">UID</label>
-              <input type="text" class="form-control" id="UID" name="uuid" placeholder="UID" />
-            </div>
-            <div class="form-group">
-              <label for="location">location</label>
-              <input type="text" class="form-control" id="location" name="location" placeholder="location" />
-            </div>
-            <div class="form-group">
-              <label for="sub_location">sub_location</label>
-              <input type="text" class="form-control" id="sub_location" name="sub_location"
-                placeholder="sub_location" />
-            </div>
-            <div class="form-group">
-              <label for="machine">machine</label>
-              <input type="text" class="form-control" id="machine" name="machine" placeholder="machine" />
-            </div>
-            <div class="form-group">
-              <label for="email">email</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="email" />
-            </div>
-
-{% comment %} ======================================================================================================= {% endcomment %}
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="currentR-cb">
-              <label class="custom-control-label" for="currentR-cb">current(R)</label>
-            </div>
-
-            <div class="row mt-4 currentR-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentR low" name="currentR_low"
-                  id="currentR_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high"
-                  id="currentR_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="currentY-cb">
-              <label class="custom-control-label" for="currentY-cb">current(Y)</label>
-            </div>
-
-            <div class="row mt-4 currentY-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentY low" name="currentY_low"
-                  id="currentY_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high"
-                  id="currentY_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="currentB-cb">
-              <label class="custom-control-label" for="currentB-cb">current(B)</label>
-            </div>
-
-            <div class="row mt-4 currentB-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentB low" name="currentB_low"
-                  id="currentB_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="currentB high" name="currentB_high"
-                  id="currentB_high">
-              </div>
-            </div>
-{% comment %} ======================================================================================================= {% endcomment %}
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="voltageR-cb">
-              <label class="custom-control-label" for="voltageR-cb">voltage(R)</label>
-            </div>
-
-            <div class="row mt-4 voltageR-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" name="voltageR_low" class="form-control" placeholder="voltageR_low"
-                  name="voltage_low" id="voltageR_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="voltageR_high" name="voltageR_high"
-                  id="voltageR_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="voltageY-cb">
-              <label class="custom-control-label" for="voltageY-cb">voltage(Y)</label>
-            </div>
-
-            <div class="row mt-4 voltageY-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" name="voltageY_low" class="form-control" placeholder="voltageY_low"
-                  name="voltageY_low" id="voltageY_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="voltageY_low" name="voltageY_low"
-                  id="voltageY_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="voltageB-cb">
-              <label class="custom-control-label" for="voltageB-cb">voltage(B)</label>
-            </div>
-
-            <div class="row mt-4 voltageB-box d-none">
-              <div class="col">
-                <input type="text" value="undefined" name="voltageB_low" class="form-control" placeholder="voltageB_low"
-                  name="voltageB_low" id="voltageB_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="voltageB_high" name="voltageB_high"
-                  id="voltageB_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="generator_speed-cb">
-              <label class="custom-control-label" for="generator_speed-cb">generator speed</label>
-            </div>
-
-            <div class="row mt-4 d-none generator_speed-box ">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low"
-                  name="generator_speed_low" id="generator_speed_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"
-                  name="generator_speed_high" id="generator_speed_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" name="" id="windspeed-cb">
-              <label class="custom-control-label" for="windspeed-cb">windspeed</label>
-            </div>
-
-            <div class="row mt-4 d-none windspeed-box">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="windspeed_low"
-                  name="windspeed_low" id="windspeed_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="windspeed_high"
-                  name="windspeed_high" id="windspeed_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="power-cb">
-              <label class="custom-control-label" for="power-cb">Power</label>
-            </div>
-
-            <div class="row mt-4 d-none power-box">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="Power low" id="power_low"
-                  name="power_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="Power high" id="power_high"
-                  name="power_high">
-              </div>
-            </div>
-
-            <div class="custom-control custom-checkbox my-2" id="">
-              <input type="checkbox" class="custom-control-input" id="torque-cb">
-              <label class="custom-control-label" for="torque-cb">Torque</label>
-            </div>
-
-            <div class="row mt-4 d-none torque-box">
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="torque low" id="torque_low"
-                  name="torque_low">
-              </div>
-              <div class="col">
-                <input type="text" value="undefined" class="form-control" placeholder="torque high" id="torque_high"
-                  name="torque_high">
-              </div>
-            </div>
-
+        {% csrf_token %}
+        <div class="modal-body" id="my-checkbox-group">
+          <div class="form-group">
+            <label for="UID">UID</label>
+            <input type="text" class="form-control" id="UID" name="uuid" placeholder="UID" />
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_node">
-              Close
-            </button>
-            <button type="submit" class="btn btn-primary" id="add_node">
-              Add Node
-            </button>
+          <div class="form-group">
+            <label for="location">location</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="location" />
           </div>
+          <div class="form-group">
+            <label for="sub_location">sub_location</label>
+            <input type="text" class="form-control" id="sub_location" name="sub_location" placeholder="sub_location" />
+          </div>
+          <div class="form-group">
+            <label for="machine">machine</label>
+            <input type="text" class="form-control" id="machine" name="machine" placeholder="machine" />
+          </div>
+          <div class="form-group">
+            <label for="email">email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="email" />
+          </div>
+
+
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentR-cb">
+            <label class="custom-control-label" for="currentR-cb">current(R)</label>
+          </div>
+
+          <div class="row mt-4 currentR-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentR low" name="currentR_low"
+                id="currentR_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high"
+                id="currentR_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentY-cb">
+            <label class="custom-control-label" for="currentY-cb">current(Y)</label>
+          </div>
+
+          <div class="row mt-4 currentY-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentY low" name="currentY_low"
+                id="currentY_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high"
+                id="currentY_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="currentB-cb">
+            <label class="custom-control-label" for="currentB-cb">current(B)</label>
+          </div>
+
+          <div class="row mt-4 currentB-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentB low" name="currentB_low"
+                id="currentB_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="currentB high" name="currentB_high"
+                id="currentB_high">
+            </div>
+          </div>
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageR-cb">
+            <label class="custom-control-label" for="voltageR-cb">voltage(R)</label>
+          </div>
+
+          <div class="row mt-4 voltageR-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" name="voltageR_low" class="form-control" placeholder="voltageR_low"
+                name="voltage_low" id="voltageR_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="voltageR_high" name="voltageR_high"
+                id="voltageR_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageY-cb">
+            <label class="custom-control-label" for="voltageY-cb">voltage(Y)</label>
+          </div>
+
+          <div class="row mt-4 voltageY-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" name="voltageY_low" class="form-control" placeholder="voltageY_low"
+                name="voltageY_low" id="voltageY_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="voltageY_low" name="voltageY_low"
+                id="voltageY_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="voltageB-cb">
+            <label class="custom-control-label" for="voltageB-cb">voltage(B)</label>
+          </div>
+
+          <div class="row mt-4 voltageB-box d-none">
+            <div class="col">
+              <input type="text" value="undefined" name="voltageB_low" class="form-control" placeholder="voltageB_low"
+                name="voltageB_low" id="voltageB_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="voltageB_high" name="voltageB_high"
+                id="voltageB_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="generator_speed-cb">
+            <label class="custom-control-label" for="generator_speed-cb">generator speed</label>
+          </div>
+
+          <div class="row mt-4 d-none generator_speed-box ">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low"
+                name="generator_speed_low" id="generator_speed_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"
+                name="generator_speed_high" id="generator_speed_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" name="" id="windspeed-cb">
+            <label class="custom-control-label" for="windspeed-cb">windspeed</label>
+          </div>
+
+          <div class="row mt-4 d-none windspeed-box">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_low" name="windspeed_low"
+                id="windspeed_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_high"
+                name="windspeed_high" id="windspeed_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="power-cb">
+            <label class="custom-control-label" for="power-cb">Power</label>
+          </div>
+
+          <div class="row mt-4 d-none power-box">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="Power low" id="power_low"
+                name="power_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="Power high" id="power_high"
+                name="power_high">
+            </div>
+          </div>
+
+          <div class="custom-control custom-checkbox my-2" id="">
+            <input type="checkbox" class="custom-control-input" id="torque-cb">
+            <label class="custom-control-label" for="torque-cb">Torque</label>
+          </div>
+
+          <div class="row mt-4 d-none torque-box">
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="torque low" id="torque_low"
+                name="torque_low">
+            </div>
+            <div class="col">
+              <input type="text" value="undefined" class="form-control" placeholder="torque high" id="torque_high"
+                name="torque_high">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="close_node">
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" id="add_node">
+            Add Node
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1078,11 +1127,13 @@
         <div class="modal-body" id="">
           <div class="form-group">
             <label for="UID">UID</label>
-            <input type="text" class="form-control" id="edit-node-modal-UID" name="uuid" value="" placeholder="UID" disabled/>
+            <input type="text" class="form-control" id="edit-node-modal-UID" name="uuid" value="" placeholder="UID"
+              disabled />
           </div>
           <div class="form-group">
             <label for="location">location</label>
-            <input type="text" class="form-control" id="edit-node-modal-location" name="location" value="" placeholder="location" />
+            <input type="text" class="form-control" id="edit-node-modal-location" name="location" value=""
+              placeholder="location" />
           </div>
           <div class="form-group">
             <label for="sub_location">sub_location</label>
@@ -1091,11 +1142,13 @@
           </div>
           <div class="form-group">
             <label for="machine">machine</label>
-            <input type="text" class="form-control" id="edit-node-modal-machine" name="machine" placeholder="machine" value=""/>
+            <input type="text" class="form-control" id="edit-node-modal-machine" name="machine" placeholder="machine"
+              value="" />
           </div>
           <div class="form-group">
             <label for="email">email</label>
-            <input type="email" class="form-control" id="edit-node-modal-email" name="email" placeholder="email" value=""/>
+            <input type="email" class="form-control" id="edit-node-modal-email" name="email" placeholder="email"
+              value="" />
           </div>
 
           <div class="alert alert-success" role="alert">
@@ -1108,12 +1161,12 @@
 
           <div class="row mt-4 currentR-box-edit d-none">
             <div class="col">
-              <input type="text" class="form-control" placeholder="currentR low" name="currentR_low" data-currentRlow= "absent"
-                id="edit-node-modal-currentR_low" value="undefined">
+              <input type="text" class="form-control" placeholder="currentR low" name="currentR_low"
+                data-currentRlow="absent" id="edit-node-modal-currentR_low" value="undefined">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high" data-currentRhigh= "absent"
-                id="edit-node-modal-currentR_high" >
+              <input type="text" value="undefined" class="form-control" placeholder="currentR high" name="currentR_high"
+                data-currentRhigh="absent" id="edit-node-modal-currentR_high">
             </div>
           </div>
 
@@ -1124,12 +1177,12 @@
 
           <div class="row mt-4 currentY-box-edit d-none">
             <div class="col">
-              <input type="text" class="form-control" placeholder="currentY low" name="currentY_low" data-currentYlow= "absent"
-                id="edit-node-modal-currentY_low" value="undefined">
+              <input type="text" class="form-control" placeholder="currentY low" name="currentY_low"
+                data-currentYlow="absent" id="edit-node-modal-currentY_low" value="undefined">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high" data-currentYhigh= "absent"
-                id="edit-node-modal-currentY_high" >
+              <input type="text" value="undefined" class="form-control" placeholder="currentY high" name="currentY_high"
+                data-currentYhigh="absent" id="edit-node-modal-currentY_high">
             </div>
           </div>
 
@@ -1140,15 +1193,15 @@
 
           <div class="row mt-4 currentB-box-edit d-none">
             <div class="col">
-              <input type="text" class="form-control" placeholder="currentB low" name="currentB_low" data-currentBlow= "absent"
-                id="edit-node-modal-currentB_low" value="undefined">
+              <input type="text" class="form-control" placeholder="currentB low" name="currentB_low"
+                data-currentBlow="absent" id="edit-node-modal-currentB_low" value="undefined">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="current high" name="current_high" data-currentBhigh= "absent"
-                id="edit-node-modal-currentB_high" >
+              <input type="text" value="undefined" class="form-control" placeholder="current high" name="current_high"
+                data-currentBhigh="absent" id="edit-node-modal-currentB_high">
             </div>
           </div>
-{% comment %} ==================================================================================== {% endcomment %}
+
           <div class="custom-control custom-checkbox my-2" id="">
             <input type="checkbox" class="custom-control-input" id="voltageR-cb-edit">
             <label class="custom-control-label" for="voltageR-cb-edit">voltage(R)</label>
@@ -1156,12 +1209,13 @@
 
           <div class="row mt-4 voltageR-box-edit d-none">
             <div class="col">
-              <input type="number" step="any" value="undefined" name="voltageR_low" class="form-control" placeholder="voltageR_low" data-voltageRlow= "absent"
-                name="voltageR_low" id="edit-node-modal-voltageR_low">
+              <input type="number" step="any" value="undefined" name="voltageR_low" class="form-control"
+                placeholder="voltageR_low" data-voltageRlow="absent" name="voltageR_low"
+                id="edit-node-modal-voltageR_low">
             </div>
             <div class="col">
-              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageR_high" name="voltageR_high" data-voltageRhigh= "absent"
-                id="edit-node-modal-voltageR_high">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageR_high"
+                name="voltageR_high" data-voltageRhigh="absent" id="edit-node-modal-voltageR_high">
             </div>
           </div>
 
@@ -1172,12 +1226,13 @@
 
           <div class="row mt-4 voltageY-box-edit d-none">
             <div class="col">
-              <input type="number" step="any" value="undefined" name="voltageY_low" class="form-control" placeholder="voltageY_low" data-voltageYlow= "absent"
-                name="voltageY_low" id="edit-node-modal-voltageY_low">
+              <input type="number" step="any" value="undefined" name="voltageY_low" class="form-control"
+                placeholder="voltageY_low" data-voltageYlow="absent" name="voltageY_low"
+                id="edit-node-modal-voltageY_low">
             </div>
             <div class="col">
-              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageY_high" name="voltageY_high" data-voltageYhigh= "absent"
-                id="edit-node-modal-voltageY_high">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageY_high"
+                name="voltageY_high" data-voltageYhigh="absent" id="edit-node-modal-voltageY_high">
             </div>
           </div>
 
@@ -1188,29 +1243,29 @@
 
           <div class="row mt-4 voltageB-box-edit d-none">
             <div class="col">
-              <input type="number" step="any" value="undefined" name="voltageB_low" class="form-control" placeholder="voltageB_low" data-voltageBlow= "absent"
-                name="voltageB_low" id="edit-node-modal-voltageB_low">
+              <input type="number" step="any" value="undefined" name="voltageB_low" class="form-control"
+                placeholder="voltageB_low" data-voltageBlow="absent" name="voltageB_low"
+                id="edit-node-modal-voltageB_low">
             </div>
             <div class="col">
-              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageB_high" name="voltageB_high" data-voltageBhigh= "absent"
-                id="edit-node-modal-voltageB_high">
+              <input type="number" step="any" value="undefined" class="form-control" placeholder="voltageB_high"
+                name="voltageB_high" data-voltageBhigh="absent" id="edit-node-modal-voltageB_high">
             </div>
           </div>
-{% comment %} =================================================== {% endcomment %}
 
           <div class="custom-control custom-checkbox my-2" id="">
-            <input type="checkbox" class="custom-control-input" id="generator_speed-cb-edit" >
+            <input type="checkbox" class="custom-control-input" id="generator_speed-cb-edit">
             <label class="custom-control-label" for="generator_speed-cb-edit">generator speed</label>
           </div>
 
           <div class="row mt-4 d-none generator_speed-box-edit ">
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low" data-generatorspeedlow= "absent"
-                name="generator_speed_low" id="edit-node-modal-generator_speed_low">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_low"
+                data-generatorspeedlow="absent" name="generator_speed_low" id="edit-node-modal-generator_speed_low">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"  data-generatorspeedhigh= "absent"
-                name="generator_speed_high" id="edit-node-modal-generator_speed_high">
+              <input type="text" value="undefined" class="form-control" placeholder="generator_speed_high"
+                data-generatorspeedhigh="absent" name="generator_speed_high" id="edit-node-modal-generator_speed_high">
             </div>
           </div>
 
@@ -1221,12 +1276,12 @@
 
           <div class="row mt-4 d-none windspeed-box-edit">
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="windspeed_low" data-windspeedlow= "absent"
-                name="windspeed_low" id="edit-node-modal-windspeed_low">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_low"
+                data-windspeedlow="absent" name="windspeed_low" id="edit-node-modal-windspeed_low">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="windspeed_high" data-windspeedhigh= "absent"
-                name="windspeed_high" id="edit-node-modal-windspeed_high">
+              <input type="text" value="undefined" class="form-control" placeholder="windspeed_high"
+                data-windspeedhigh="absent" name="windspeed_high" id="edit-node-modal-windspeed_high">
             </div>
           </div>
 
@@ -1237,12 +1292,12 @@
 
           <div class="row mt-4 d-none power-box-edit">
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="Power low" id="edit-node-modal-power_low" data-powerlow= "absent"
-                name="power_low">
+              <input type="text" value="undefined" class="form-control" placeholder="Power low"
+                id="edit-node-modal-power_low" data-powerlow="absent" name="power_low">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="Power high" id="edit-node-modal-power_high" data-powerhigh= "absent"
-                name="power_high">
+              <input type="text" value="undefined" class="form-control" placeholder="Power high"
+                id="edit-node-modal-power_high" data-powerhigh="absent" name="power_high">
             </div>
           </div>
 
@@ -1253,12 +1308,12 @@
 
           <div class="row mt-4 d-none torque-box-edit">
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="torque low" id="edit-node-modal-torque_low" data-torquelow= "absent"
-                name="torque_low">
+              <input type="text" value="undefined" class="form-control" placeholder="torque low"
+                id="edit-node-modal-torque_low" data-torquelow="absent" name="torque_low">
             </div>
             <div class="col">
-              <input type="text" value="undefined" class="form-control" placeholder="torque high" id="edit-node-modal-torque_high" data-torquehigh= "absent"
-                name="torque_high">
+              <input type="text" value="undefined" class="form-control" placeholder="torque high"
+                id="edit-node-modal-torque_high" data-torquehigh="absent" name="torque_high">
             </div>
           </div>
 
