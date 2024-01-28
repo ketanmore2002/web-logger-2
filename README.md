@@ -97,9 +97,9 @@ To set up the Virology Research Data Logger on your local environment, follow th
 
 ### Images 
 
-<img width="1470" alt="Screenshot 2024-01-23 at 11 52 11 AM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/ced957fe-65b9-4b95-a73c-208f11085c71">
+<img width="1470" alt="Screenshot 2024-01-28 at 7 23 35 PM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/a5b59853-b441-45fa-a18e-61a5f9676b8c">
 
-<img width="1470" alt="Screenshot 2024-01-23 at 11 51 14 AM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/482df853-15e8-462b-a025-24df9e083ff7">
+<img width="1470" alt="Screenshot 2024-01-28 at 7 24 01 PM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/427a842e-e0f7-4004-8e5a-d1afc195a3e7">
 
 <img width="1470" alt="Screenshot 2024-01-28 at 7 19 12 PM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/caf60572-811a-4b2b-b7ec-30393aaa7cf7">
 
