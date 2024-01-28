@@ -93,3 +93,16 @@ To set up the Virology Research Data Logger on your local environment, follow th
 
 10. **Log in with the Superuser Credentials:**
     Use the superuser credentials created in step 7 to log in and explore the features.
+
+
+### Images 
+
+<img width="1470" alt="Screenshot 2024-01-23 at 11 52 11 AM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/ced957fe-65b9-4b95-a73c-208f11085c71">
+
+<img width="1470" alt="Screenshot 2024-01-23 at 11 51 14 AM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/482df853-15e8-462b-a025-24df9e083ff7">
+
+<img width="1470" alt="Screenshot 2024-01-28 at 7 19 12 PM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/caf60572-811a-4b2b-b7ec-30393aaa7cf7">
+
+<img width="1470" alt="Screenshot 2024-01-28 at 7 19 47 PM" src="https://github.com/ketanmore2002/web-logger-2/assets/88627103/f1dca506-d3af-434a-9d46-8d5a6796adfa">
+
+
